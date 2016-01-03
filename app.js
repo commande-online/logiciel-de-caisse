@@ -1,4 +1,4 @@
-var DOMAIN_API = "http://apero-pizza-etc.commande-online.fr";
+var DOMAIN_API = ""; //http://apero-pizza-etc.commande-online.fr";
 
 var app = angular
     .module('starterApp', ['ngMaterial', 'ngCookies', 'ngMessages', 'textAngular', 'minicolors', 'ui.router', 'ngFileUpload', 'ui.tree', 'angular-jwt', 'main', 'customers', 'menu', 'pages', 'templates', 'categories', 'products','promotions', 'carts', 'medias', 'users', 'indexedDB', 'shops'], function($httpProvider) {
