@@ -1,0 +1,102 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+
+        <div class="dialog-content">
+            <form id="categoryForm" name="categoryForm">
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="Informations Générals">
+                        <md-content class="md-padding">
+                            <div layout layout-sm="column">
+                                <md-input-container flex="40">
+                                    <label>Titre</label>
+                                    <input ng-model="category.infos[lang].name" name="name" required>
+                                    <div class="errors" ng-messages="categoryForm.name.$error" ng-if="categoryForm.$dirty">
+                                        <div ng-message="required">Champs obligatoire</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="30" style="overflow: initial">
+                                    <label>Couleur du bouton</label>
+                                    <div class="md-input">
+                                        <div>
+                                            <input ng-model="category.order_button_color" minicolors>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-select placeholder="Langue" ng-model="lang" flex="33">
+                                    <md-option  ng-repeat="l in availableLanguages" ng-value="l.key">{{l.name}} <span class="glyphicons glyphicons-ok-2" ng-hide="category.infos[l.key] == undefined"></span></md-option>
+                                </md-select>
+                            </div>
+
+                            <md-input-container flex>
+                                <label>Description d'entête</label>
+                                <text-angular ng-model="category.infos[lang].header"></text-angular>
+                            </md-input-container>
+                        </md-content>
+                    </md-tab>
+
+
+                    <md-tab label="Ingrédients">
+                        <md-content class="md-padding">
+                            <div ng-repeat="ingredient in category.ingredients track by $index">
+                                <div layout layout-sm="column">
+                                    <md-input-container flex="45">
+                                        <label>Nom du l'ingrédient {{$index+1}}</label>
+                                        <input ng-model="ingredient.name">
+                                    </md-input-container>
+                                    <md-input-container flex="45">
+                                        <label>Prix du l'ingrédient {{$index+1}}</label>
+                                        <input ng-model="ingredient.price" type="number" min="0" step="0.001">
+                                    </md-input-container>
+                                    <div flex="10" class="text-right">
+                                        <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="category.ingredients.length-1!=$index" ng-click="categoryIngredientAdd(category);">
+                                            <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+                                        </md-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab>
+
+
+                    <md-tab label="Produits">
+                        <md-content class="md-padding">
+                            <div ng-repeat="product in category.products track by $index">
+                                <div layout layout-sm="column">
+                                    <input ng-model="product.product" type="hidden">
+                                    <md-input-container flex="85">
+                                        <label>Nom du produit {{$index+1}}</label>
+                                        <input ng-model="product.name" readonly>
+                                    </md-input-container>
+                                    <div flex="13" class="text-center">
+                                        <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="category.products.length-1==$index" ng-click="categoryProductDown($event, $index);">
+                                            <md-icon md-font-icon="glyphicons glyphicons-chevron-down"></md-icon>
+                                        </md-button>
+                                        <md-button class="md-fab md-mini md-warn" aria-label="Up" ng-hide="$index==0" ng-click="categoryProductUp($event, $index);">
+                                            <md-icon md-font-icon="glyphicons glyphicons-chevron-up"></md-icon>
+                                        </md-button>
+                                        <input type="hidden" ng-model="product.position">
+                                    </div>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+
+
+
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary"  ng-disabled="categoryForm.$invalid">
+            Sauvegarder
+        </md-button>
+    </div>
+</md-dialog>

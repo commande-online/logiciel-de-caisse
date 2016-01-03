@@ -1,0 +1,78 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+
+
+        <div class="dialog-content">
+            <form id="mediaForm" name="mediaForm">
+                <md-tabs md-dynamic-height md-border-bottom>
+
+                    <md-tab label="Informations du fichier">
+                        <md-content class="md-padding">
+                            <md-input-container flex>
+                                <label>Nom du fichier</label>
+                                <input ng-model="media.filename" readonly>
+                            </md-input-container>
+                            <md-chips flex="100"
+                                      ng-model="media.tags"
+                                      placeholder="Ajouter un tag"
+                                      delete-button-label="Supprimer"
+                                      secondary-placeholder="+Tag"></md-chips>
+                                <md-input-container>
+                                    <label>URL</label>
+                                    <input ng-model="media.url" name="url">
+                                </md-input-container>
+                                <div layout="row">
+                                <md-input-container flex="66">
+                                    <label>Titre</label>
+                                    <input ng-model="media.infos[lang].name" name="name">
+                                </md-input-container>
+                                <md-select placeholder="Langue" ng-model="lang" flex="33">
+                                    <md-option  ng-repeat="l in availableLanguages" ng-value="l.key">{{l.name}} <span class="glyphicons glyphicons-ok-2" ng-hide="media.infos[l.key] == undefined"></span></md-option>
+                                </md-select>
+                            </div>
+                            <md-input-container flex>
+                                <text-angular ng-model="media.infos[lang].text"></text-angular>
+                            </md-input-container>
+
+                        </md-content>
+                    </md-tab>
+                    <md-tab label="Prévisualisation du fichier">
+                        <md-content class="md-padding">
+                            <div ng-show="media.isPicture()" class="ng-hide text-center">
+                                <h3>{{media.name}}</h3>
+                                <img ng-src="/media/show/{{media._id}}/{{media.filename}}" class="md-card-image" style="max-width: 100%" />
+                            </div>
+                            <div ng-show="!media.isPicture()" class="ng-hide text-center">
+                                <h3>{{media.name}}</h3>
+                                <pre class="text-left">{{media.previewContent}}</pre>
+                            </div>
+
+                        </md-content>
+                    </md-tab>
+                    <md-tab label="Liens vers le fichier">
+                        <md-content class="md-padding">
+                            <md-list>
+                                <md-list-item class="" ng-repeat="item in media.links">
+                                    <p> {{media.getLinkInfo(item)}} </p>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+            </form>
+        </div>
+
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary" ng-disabled="mediaForm.$invalid">
+            Sauvegarder
+        </md-button>
+    </div>
+</md-dialog>

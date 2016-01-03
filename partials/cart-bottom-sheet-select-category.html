@@ -1,0 +1,12 @@
+<md-bottom-sheet id="cartBottomSheetSelectCategory" class="md-grid">
+    <md-list>
+        <md-list-item ng-repeat="item in listCategories">
+            <md-button class="md-raised md-grid-item-content" ng-style="item.getBackgroundColorStyle()" ng-click="listItemClick(item);">
+                <div>
+                    {{item.infos.fr.name}}
+                    &nbsp;<span class="glyphicons glyphicons-check" ng-hide="hideCheck(item)"></span>
+                </div>
+            </md-button>
+        </md-list-item>
+    </md-list>
+</md-bottom-sheet>

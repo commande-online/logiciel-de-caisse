@@ -1,0 +1,29 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">Connectez vous à wiiiin</h3>
+        </md-toolbar>
+
+
+
+        <div class="dialog-content" layout>
+            <form id="connectionForm" flex="100" layout ng-submit="confirm()">
+                <input type="hidden" name="user.connection" value="1" />
+                <input type="hidden" name="user.cookie" value="1" />
+                <md-input-container flex="50">
+                    <label>Nom d'utilisateur</label>
+                    <input ng-model="user.login" required type="email">
+                </md-input-container>
+                <md-input-container flex="50">
+                    <label>Mot de passe</label>
+                    <input ng-model="user.password" type="password" required>
+                </md-input-container>
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="confirm()" class="md-primary" id="connectionBtn">
+            Connexion
+        </md-button>
+    </div>
+</md-dialog>

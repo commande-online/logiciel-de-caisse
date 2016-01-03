@@ -1,0 +1,41 @@
+<div flex layout="row" id="cartForm" class="" layout-margin layout-fill>
+    <div flex-gt-lg="70" flex="100" class="md-whiteframe-z2 flex">
+        <md-toolbar class="md-warn">
+            <h2 class="md-toolbar-tools">
+                <div flex class="text-center">
+                    Produits
+                    <span ng-hide="currentCat == null"> :: {{currentCat.infos.fr.name}}</span>
+                </div>
+            </h2>
+        </md-toolbar>
+        <md-content layout-padding class="mainCartItem">
+            <md-list>
+                <md-list-item class="md-3-line" >
+                    <div class="md-list-item-text">
+                        <section layout="row" layout-align="center center" layout-wrap="" id="listCategories">
+                            <md-button aria-label="{{item.name}}" class="md-raised products" ng-repeat="item in listCategories" ng-style="item.getBackgroundColorStyle()" ng-click="selectCategory(item)">{{item.infos.fr.name}}</md-button>
+                        </section>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item class="md-3-line" >
+                    <div class="md-list-item-text">
+                        <section layout="row" layout-align="center center" layout-wrap="" id="listProducts">
+                            <md-button aria-label="{{item.name}}" class="md-raised products" ng-repeat="item in listProducts" ng-style="item.getBackgroundColorStyle()" ng-disabled="!item.inCategory(currentCat)" ng-click="showSelectProduct($event, item)" ng-hide="!item.inCategory(currentCat) && hideProducts">{{item.name}}</md-button>
+                        </section>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item class="md-3-line" >
+                    <div class="md-list-item-text">
+                        <section layout="row" layout-align="center center" layout-wrap="" id="listCategories">
+                            <md-button aria-label="{{item.name}}" class="md-raised products" ng-repeat="item in listCategories" ng-style="item.getBackgroundColorStyle()" ng-click="selectCategory(item)">{{item.infos.fr.name}}</md-button>
+                        </section>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+    <div flex-gt-lg="30" flex show-gt-lg hide-lg hide-md hide-sm class="md-whiteframe-z2 flex" ng-include="'partials/cart-ticket.html'">
+    </div>
+</div>

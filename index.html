@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>myCOL :: Logiciel de caisse</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="./libs/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="./libs/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="./libs/font-awesome/css/font-awesome.min.css" />
+    <link rel='stylesheet' href='./libs/textAngular/src/textAngular.css' />
+    <link rel="stylesheet" href="./libs/jquery-minicolors/jquery.minicolors.css" />
+    <link rel="stylesheet" href="./assets/app-bo.css"/>
+    <!-- link rel="stylesheet" href="assets/compiled.css"/ -->
+    <link rel="stylesheet" href="http://www.commande-online.fr/css/glyphicons.css" />
+</head>
+
+<body ng-app="starterApp" layout="column" ng-controller="MainController as main">
+<div id="splash" ng-hide="hideSplash">
+    <md-toolbar>
+        <span flex></span>
+        <div class="md-toolbar-tools md-toolbar-tools-bottom" id="loading" ng-hide="hideSplashLoading">
+            <md-progress-linear md-mode="indeterminate" class="md-warn"></md-progress-linear>
+        </div>
+    </md-toolbar>
+</div>
+
+<div class="" ng-hide="!hideSplash" layout="row">
+    <!-- Menu -->
+    <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" md-component-id="mainMenu" id="mainMenuContainer"
+                class="md-whiteframe-z2 md-sidenav-left">
+        <md-toolbar class="md-hue-1 md-whiteframe-z2">
+            <md-button layout="row" layout-align="center center" class="md-toolbar-tools md-warn"
+                       href="http://www.wiiiin.com">
+                <h1>wiiiin</h1>
+            </md-button>
+        </md-toolbar>
+        <div ng-controller="MenuController as menu" id="elementMainMenu">
+        <md-button ng-repeat-start="it in menu.mainMenu" layout="column" layout-align="center center"
+                   flex class="capitalize" ng-click="main.selectPage(it)"
+                   ui-sref-active="md-warn" ui-sref="{{it.url}}">
+            <div hide-sm hide-md class="md-tile-content">
+                <span class="{{it.logo}}"></span>
+            </div>
+            <div class="md-tile-content">
+                {{it.name}}
+            </div>
+        </md-button>
+        <md-divider ng-repeat-end></md-divider>
+        </div>
+    </md-sidenav>
+
+
+    <div flex>
+        <!-- Header -->
+        <md-toolbar layout="row" id="header">
+            <md-button class="menu" hide-gt-lg ng-click="main.toggleMainMenu()" aria-label="Afficher le menu">
+                <md-icon md-font-icon="glyphicons glyphicons-menu-hamburger" ></md-icon>
+            </md-button>
+            <h1>Logiciel de Caisse - {{main.selectedPage.name}}</h1>
+            <md-button id="notifications" class="menu lead" ng-click="main.toggleMainMenu()" aria-label="Les notifications">
+                <md-icon md-font-icon="glyphicons glyphicons-bell" ></md-icon> {{main.notifications.length}}
+            </md-button>
+        </md-toolbar>
+
+        <!-- Content -->
+        <div flex layout="row">
+            <md-content flex id="content">
+                <md-sidenav class="md-whiteframe-z2 md-sidenav-left" md-component-id="subMenu">
+                    <md-list layout="column">
+                        <md-item ng-repeat="it in main.subMenu" flex="100" layout>
+                            <md-button href="#/{{it.url}}" ng-click="main.selectSubPage(it)" ng-class="{'selected' : it === menu.selected }" flex="100">
+                                <md-icon md-font-icon="{{it.logo}}" class="mainMenuElt md-hue-1"></md-icon>
+                                <div class="name">{{it.name}}</div>
+                            </md-button>
+                        </md-item>
+                    </md-list>
+                </md-sidenav>
+
+                <section ui-view></section>
+
+            </md-content>
+        </div>
+
+    </div>
+</div>
+
+<script src="./libs/jquery/dist/jquery.min.js"></script>
+<script src="./libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script src="./libs/angular/angular.min.js"></script>
+<script src="./libs/angular-cookies/angular-cookies.min.js"></script>
+<script src="./libs/angular-messages/angular-messages.min.js"></script>
+<script src="./libs/angular-animate/angular-animate.min.js"></script>
+<script src="./libs/angular-aria/angular-aria.min.js"></script>
+<script src="./libs/angular-material/angular-material.min.js"></script>
+<script src="./libs/ui-router/release/angular-ui-router.min.js"></script>
+<script src='./libs/textAngular/dist/textAngular-rangy.min.js'></script>
+<script src='./libs/textAngular/dist/textAngular-sanitize.min.js'></script>
+<script src='./libs/textAngular/dist/textAngular.min.js'></script>
+<script src="./libs/jquery-minicolors/jquery.minicolors.min.js"></script>
+<script src="./libs/angular-minicolors/angular-minicolors.js"></script>
+<script src="./libs/ng-file-upload/ng-file-upload-all.min.js"></script>
+<script src="./libs/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
+<script src="./libs/angular-jwt/dist/angular-jwt.js"></script>
+
+
+<script src="./modules/Main.js"></script>
+<script src="./modules/Menu.js"></script>
+<script src="./modules/Medias.js"></script>
+<script src="./modules/Customers.js"></script>
+<script src="./modules/Promotions.js"></script>
+
+<script src="./controllers/Main.js"></script>
+<script src="./controllers/Home.js"></script>
+<script src="./controllers/Menu.js"></script>
+<script src="./controllers/Medias.js"></script>
+<script src="./controllers/Promotions.js"></script>
+
+<script src="./services/Language.js"></script>
+<script src="./services/Medias.js"></script>
+<script src="./services/Menu.js"></script>
+<script src="./services/Promotions.js"></script>
+
+<script src="./indexedDB/indexedDB-service.js"></script>
+
+<script src="./carts/carts-factory.js"></script>
+<script src="./carts/carts-controller.js"></script>
+<script src="./carts/carts-service.js"></script>
+
+<script src="./categories/categories-factory.js"></script>
+<script src="./categories/categories-controller.js"></script>
+<script src="./categories/categories-service.js"></script>
+
+<script src="./products/products-factory.js"></script>
+<script src="./products/products-controller.js"></script>
+<script src="./products/products-service.js"></script>
+
+<script src="./pages/pages-factory.js"></script>
+<script src="./pages/pages-controller.js"></script>
+<script src="./pages/pages-service.js"></script>
+
+<script src="./shops/shops-factory.js"></script>
+<script src="./shops/shops-controller.js"></script>
+
+<script src="./templates/templates-factory.js"></script>
+<script src="./templates/templates-controller.js"></script>
+<script src="./templates/templates-service.js"></script>
+
+<script src="./users/users-factory.js"></script>
+<script src="./users/users-controller.js"></script>
+<script src="./users/users-service.js"></script>
+
+
+<script src="./app.js"></script>
+
+<!-- Inspired by http://flatlogic.github.io/angular-material-dashboard/site/#/dashboard -->
+<!-- version {{main.version}} -->
+</body>
+</html>

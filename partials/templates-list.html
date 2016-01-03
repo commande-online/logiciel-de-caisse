@@ -1,0 +1,86 @@
+<section flex class="md-whiteframe-z1">
+    <md-toolbar class="demo-toolbar md-default-theme md-warn md-tall" layout='column'>
+        <span flex></span>
+
+        <div class="main-fab material-button-left">
+            <button class="md-fab md-accent md-button md-default-theme" ng-click="newTemplate($event);">
+                <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+            </button>
+        </div>
+
+        <div class="md-toolbar-tools">
+            <div class="fill-height" layout='row' flex>
+                <div class="md-toolbar-item.md-breadcrumb" ng-hide='toggleSearch'>
+                    <h3 class="ng-binding">Liste des fiches produits</h3>
+                </div>
+                <span flex ng-hide='toggleSearch'></span>
+                <md-input-container flex style='' ng-show='toggleSearch'>
+                    <input type='text' ng-model='search.name' />
+                </md-input-container>
+                <div layout="row" class="md-toolbar-item md-tools">
+                    <a ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme" tabindex="0"><span class="glyphicons glyphicons-search"></span></a>
+                </div>
+            </div>
+        </div>
+    </md-toolbar>
+    <md-content id="listTemplates" class="md-padding text-center" style="">
+    <table class="table tableItems">
+        <thead>
+        <tr>
+            <th width="0%">ID</th>
+            <th width="100%">
+                <a ng-click="orderByField='shortDescription'; reverseSort = !reverseSort">
+                    Titre
+                </a>
+            </th>
+            <th width="0%" class="text-center">
+                <a ng-click="orderByField='item.sendDate.sec'; reverseSort = !reverseSort">
+                    Dernière&nbsp;modif.
+                </a>
+            </th>
+            <th width="0%" class="text-center">Informations</th>
+            <th width="0%" class="text-center">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in listTemplates | filter:search | orderBy:orderByField:reverseSort" id="template_{{item._id}}">
+            <td>{{item._id}}</td>
+            <td class="text-left"><strong>{{item.name}}</strong></td>
+            <td class="text-center">
+                {{item.logStatus[item.logStatus.length - 1].date.sec * 1000 | date:'shortDate'}}
+            </td>
+            <td class="text-center">
+                <div layout="row">
+                    <div flex>
+                        <md-button class="md-fab md-primary md-button-large" aria-label="Champs">
+                            <md-icon md-font-icon="glyphicons glyphicons-more-items"></md-icon>{{item.fields.length}}
+                        </md-button>
+                    </div>
+                    <div flex>
+                        <md-button class="md-fab md-primary md-button-large" aria-label="Produits">
+                            <md-icon md-font-icon="glyphicons glyphicons-vases"></md-icon>{{item.products.length}}
+                        </md-button>
+                    </div>
+                </div>
+
+            </td>
+            <td>
+                <div layout="row">
+                    <div flex>
+                        <md-button class="md-fab md-warm md-button-large" aria-label="Edition" ng-click="editTemplate($event, item);">
+                            <md-icon md-font-icon="glyphicons glyphicons-pencil"></md-icon>
+                        </md-button>
+                    </div>
+                    <div flex>
+                        <md-button class="md-fab md-warm md-button-large" aria-label="Suppression" ng-click="showConfirmDeleteTemplate($event, item);" ng-disabled="item.products.length > 0">
+                            <md-icon md-font-icon="glyphicons glyphicons-bin"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</md-content>
+</section>
+<p>&nbsp;</p>

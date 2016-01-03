@@ -1,0 +1,34 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+        <div class="dialog-content">
+
+            <div ngf-select="" ngf-drop="" ng-model="files" ngf-multiple="true" ngf-capture="camera" ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"  ngf-allow-dir="true" class="drop-box ng-pristine ng-valid" ngf-drop-available="true">
+                Sélectionnez un fichier ou glissez le/les dans la zone
+            </div>
+            <br />&nbsp;
+            <div class="alert alert-danger"><strong><span class="glyphicons glyphicons-warning-sign"></span> Attention :</strong> si vous téléverser un fichier ayant le même nom qu'un fichier qui existe déjà, ce dernier sera remplacé.</div>
+
+        </div>
+        <div ng-show="files">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">Les fichiers</h3>
+        </md-toolbar>
+        <md-list>
+
+            <md-list-item ng-repeat="f in files">
+                <p> {{f.name}} </p>
+                <span> {{f.size}} Octets </span>
+            </md-list-item>
+        </md-list>
+</div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="confirm()" class="md-primary">
+            Terminer
+        </md-button>
+    </div>
+</md-dialog>

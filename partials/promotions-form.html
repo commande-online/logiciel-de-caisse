@@ -1,0 +1,66 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+
+
+        <div class="dialog-content">
+            <form id="pageForm" name="promotionForm">
+                <div layout layout-sm="column">
+                    <md-input-container flex="66">
+                        <label>Titre</label>
+                        <input ng-model="promotion.infos[lang].shortDescription" name="name" required>
+                        <div class="errors" ng-messages="promotionForm.name.$error" ng-if="promotionForm.$dirty">
+                            <div ng-message="required">Champs obligatoire</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex="33">
+                        <label>Date de fin de validité</label>
+                        <input ng-model="promotion.validUntilDate" name="validUntil" type="date">
+                    </md-input-container>
+                </div>
+                <div layout layout-sm="column">
+                    <md-select placeholder="Langue" ng-model="lang" flex="33">
+                        <md-option  ng-repeat="l in availableLanguages" ng-value="l.key">{{l.name}} <span class="glyphicons glyphicons-ok-2" ng-hide="promotion.infos[l.key] == undefined"></span></md-option>
+                    </md-select>
+                    <md-select name="product" ng-model="promotion.product.$id" placeholder="Associer la promotion à un produit" class="" flex="33">
+                        <md-option value="">Aucun produit</md-option>
+                        <md-option ng-repeat="t in products" ng-value="t._id">{{t.name}}</md-option>
+                    </md-select>
+                    <md-input-container flex="33">
+                        <label>Ancien prix en €</label>
+                        <input ng-model="promotion.oldPriceAmount" ng-hide="promotion.product.$id">
+                    </md-input-container>
+                </div>
+                <div layout layout-sm="column">
+                    <md-input-container flex="33">
+                        <label>Prix remisé en €</label>
+                        <input type="number" ng-model="promotion.priceAmount" ng-hide="promotion.pricePercentage || promotion.priceFreeText">
+                    </md-input-container>
+                    <md-input-container flex="33">
+                        <label>Pourcentage de remise %</label>
+                        <input type="number" ng-model="promotion.pricePercentage" ng-hide="promotion.priceAmount || promotion.priceFreeText">
+                    </md-input-container>
+                    <md-input-container flex="33">
+                        <label>Remise</label>
+                        <input ng-model="promotion.priceFreeText" ng-hide="promotion.pricePercentage || promotion.priceAmount">
+                    </md-input-container>
+                </div>
+
+                <md-input-container flex>
+                    <text-angular ng-model="promotion.infos[lang].longDescription" name="description" aria-label="Description de la promotion"></text-angular>
+                </md-input-container>
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary"  ng-disabled="promotionForm.$invalid">
+            Sauvegarder
+        </md-button>
+    </div>
+</md-dialog>

@@ -1,0 +1,10 @@
+<md-bottom-sheet id="cartBottomSheetSelectCategory" class="md-grid">
+    <md-list>
+        <md-list-item ng-repeat="item in product.prices">
+            <md-button class="md-raised md-grid-item-content" ng-style="item.getBackgroundColorStyle()" ng-click="listItemClick(product, item, 1);">
+                <span>{{templateService.getField(item.field).name}}</span>
+                <span>{{parsePrice(item)}} &euro;</span>
+            </md-button>
+        </md-list-item>
+    </md-list>
+</md-bottom-sheet>

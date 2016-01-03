@@ -1,0 +1,108 @@
+<div layout="row" layout-sm="column" class="ng-scope" layout-margin layout-wrap>
+
+    <div flex="25" flex-sm="100" class="md-whiteframe-z1 flex">
+        <md-toolbar class="demo-toolbar md-default-theme md-warn">
+            <div class="md-toolbar-tools">
+                <h3 class="ng-binding">Code QR</h3>
+            </div>
+        </md-toolbar>
+        <md-content class="md-padding text-center" style="">
+            <p><img src="/bo-management/showQRCode" /></p>
+            <p>Attention : votre QR code est sous votre responsabilité !</p>
+        </md-content>
+    </div>
+
+
+    <div flex="74" flex-sm="100" class="md-whiteframe-z1 flex" ng-controller="CartsListController as carts" id="homeCarts">
+        <md-toolbar class="demo-toolbar md-default-theme md-warn">
+            <div class="md-toolbar-tools">
+                <h3 class="ng-binding">Les dernières ventes</h3>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <md-content class="" style="height: 600px;">
+            <section>
+                <md-subheader class="md-primary inlineBlocks" id="cartSearch">
+                    Commandes :
+                    du
+                    <md-datepicker ng-model="begDate" md-placeholder="Date de début" ng-change="refreshCartsList();"></md-datepicker>
+                    au
+                    <md-datepicker ng-model="endDate" md-placeholder="Date de fin" ng-change="refreshCartsList();"></md-datepicker>
+                    avec pour état
+                    <md-checkbox ng-model="statusCart.notStarted" aria-label="Commandes non commencées" ng-change="refreshCartsList();">
+                        non commencées
+                    </md-checkbox>
+                    <md-checkbox ng-model="statusCart.ongoing" aria-label="Commandes en cours" ng-change="refreshCartsList();">
+                        en cours
+                    </md-checkbox>
+                    <md-checkbox ng-model="statusCart.completed" aria-label="Commandes terminées" ng-change="refreshCartsList();">
+                        terminées
+                    </md-checkbox>
+                    <md-checkbox ng-model="statusCart.canceled" aria-label="Commandes annulées" ng-change="refreshCartsList();">
+                        annulées
+                    </md-checkbox>
+                </md-subheader>
+                <table class="table" id="listCarts">
+                    <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th class="text-center">
+                            Type
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Montant
+                        </th>
+                        <th>
+                            Client
+                        </th>
+                        <th>
+                            Statut
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in listCarts | orderBy:'date':true">
+                        <td>
+                            {{ item._id }}
+                        </td>
+                        <td class="text-center">
+                            <span ng-hide="item.created_from != 'BO'" aria-label="Commande provenant du logiciel de caisse" class="glyphicons glyphicons-shop-window"></span>
+                            <span ng-hide="item.created_from != 'FO'" aria-label="Commande provenant du site internet" class="glyphicons glyphicons-global"></span>
+                            <span ng-hide="item.created_from != 'API'"  aria-label="Commande provenant de l'application mobile" class="glyphicons glyphicons-iphone"></span>
+                            &nbsp;
+                            <span ng-hide="item.delivery_partner != 'ONSITE'"  aria-label="Commande sur place" class="glyphicons glyphicons-dining-set"></span>
+                            <span ng-hide="item.delivery_partner != 'PICKUP'"  aria-label="Commande à retirer" class="glyphicons glyphicons-shopping-bag"></span>
+                            <span ng-hide="item.delivery_partner == 'PICKUP' || item.delivery_partner == 'ONSITE'"  aria-label="Commande à livrer" class="glyphicons glyphicons-cargo"></span>
+                        </td>
+                        <td>{{ item.date | date : "medium" }}</td>
+                        <td>{{ item.getAmount(true) }}</td>
+                        <td>{{ item.user.firstname }} {{ item.user.lastname }}</td>
+                        <td>{{ item.status_text }} </td>
+                        <td class="actions">
+                            <md-button ng-href="#/cart/{{item._id}}" class="md-fab" aria-label="Détail de la commande">
+                                <span class="glyphicons glyphicons-eye-open"></span>
+                            </md-button>
+                            &nbsp;
+                            <md-button class="md-fab" aria-label="Imprimer le ticket de caisse" ng-click="cartPrint(item);">
+                                <span class="glyphicons glyphicons-invoice"></span>
+                            </md-button>
+                            &nbsp;
+                            <md-button class="md-fab md-primary" aria-label="Terminer la commande" ng-hide="!item.isSavable()" ng-click="validateCart(item);">
+                                <span class="glyphicons-ok glyphicons"></span>
+                            </md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </md-content>
+    </div>
+</div>

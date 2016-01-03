@@ -1,0 +1,25 @@
+<section flex class="md-whiteframe-z2">
+    <md-toolbar class="demo-toolbar md-default-theme md-warn md-tall" layout='column'>
+        <span flex></span>
+
+        <div class="md-toolbar-tools">
+            <div class="fill-height" layout='row' flex>
+                <div class="md-toolbar-item.md-breadcrumb" ng-hide='toggleSearch'>
+                    <h3 class="ng-binding">Base de données du navigateur</h3>
+                </div>
+            </div>
+        </div>
+    </md-toolbar>
+    <md-content id="shopDatabase" class="md-padding text-center" style="">
+        <p>Souhaitez vous reinitialisez la base de données de votre navigateur ?<br />
+            <small>Vous n'allez perdre aucun fichier / information. A utiliser qu'en cas de problème dans Google Chrome</small>
+        </p>
+        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+            <md-button class="md-raised" href="#/home">NON</md-button>
+            <md-button class="md-raised md-primary" ng-click="reinitDb();">OUI</md-button>
+        </section>
+        <p>&nbsp;</p>
+        <p><span class="glyphicons glyphicons-warning-sign"></span> Si vous cliquez sur "OUI", la page va se rafraichir en rechargeant la base de donnée. Cela peut prendre quelques minutes.</p>
+    </md-content>
+</section>
+<p>&nbsp;</p>

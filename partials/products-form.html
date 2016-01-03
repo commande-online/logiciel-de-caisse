@@ -1,0 +1,153 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+
+
+        <div class="dialog-content">
+            <form id="productForm" name="productForm">
+                <md-tabs md-dynamic-height md-border-bottom>
+
+                    <md-tab label="Informations Générals">
+                        <md-content class="md-padding">
+
+                            <div layout layout-sm="column">
+                                <md-input-container flex="40">
+                                    <label>Nom</label>
+                                    <input name="name" ng-model="product.name" required>
+                                    <div class="errors" ng-messages="productForm.name.$error" ng-if="productForm.$dirty">
+                                        <div ng-message="required">Champs obligatoire</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="30">
+                                    <label>Codebar</label>
+                                    <input ng-model="product.barcode">
+                                </md-input-container>
+                                <md-input-container flex="30" style="overflow: initial">
+                                    <label>Couleur du bouton</label>
+                                    <div class="md-input">
+                                        <div>
+                                            <input ng-model="product.order_button_color" minicolors>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div layout layout-sm="column">
+                                <md-input-container flex="30"  layout="row">
+                                    <span class="labelSelect">Fiche produit</span>
+                                    <md-select name="templateSelect" ng-model="product.template.$id" placeholder="Fiche produit" class="" flex required>
+                                        <md-option ng-repeat="t in templates" ng-value="t._id">{{t.name}}</md-option>
+                                    </md-select>
+                                    <div class="errors" ng-messages="productForm.templateSelect.$error" ng-if="productForm.$dirty">
+                                        <div ng-message="required">Champs obligatoire</div>
+                                    </div>
+                                </md-input-container>
+                                <md-switch ng-model="product.website" aria-label="Produit présent sur le siteweb" class="md-primary">
+                                    Produit présent sur le siteweb
+                                </md-switch>
+                            </div>
+
+                            <div layout>
+                                <md-chips flex="100"
+                                        ng-model="product.tags"
+                                        placeholder="Ajouter un ingrédient ou tag"
+                                        delete-button-label="Supprimer"
+                                        secondary-placeholder="+Tag/Ingrédients"></md-chips>
+                            </div>
+                            <br />&nbsp;
+                        </md-content>
+                    </md-tab>
+
+                    <md-tab label="La fiche produit">
+                        <div class="text-center">
+                            <md-select placeholder="Langue" ng-model="lang">
+                                <md-option  ng-repeat="l in availableLanguages" ng-value="l.key">{{l.name}}</md-option>
+                            </md-select>
+                        </div>
+                        <md-content class="md-padding" ng-repeat="(j, t) in templates">
+                            <div ng-if="t._id == product.template.$id">
+                                <div ng-repeat="(i, f) in t.fields" ng-switch="f.type">
+                                    <!-- Text field -->
+                                    <div ng-switch-when="1">
+                                        <h4 flex>{{f.name}}</h4>
+                                        <md-input-container>
+                                            <text-angular ng-model="f[lang].value" aria-label="f.name"></text-angular>
+                                        </md-input-container>
+                                    </div>
+
+                                    <!-- Price field -->
+                                    <div ng-switch-when="2" layout layout-sm="column">
+                                        <h4 flex>{{f.name}}</h4>
+                                        <md-input-container flex>
+                                            <label>Prix sur site web</label>
+                                            <input ng-model="f.value">
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>TVA</label>
+                                            <input ng-model="f.vat">
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>Prix en salle</label>
+                                            <input ng-model="f.value_onsite">
+                                        </md-input-container>
+                                        <md-input-container flex ng-hide="!true">
+                                            <label>Stock</label>
+                                            <input ng-model="f.stock">
+                                        </md-input-container>
+                                        <md-switch ng-model="f.isVatIncl" aria-label="TVA incluse ?" class="md-primary">
+                                            <span ng-if="f.isVatIncl">Prix TTC</span>
+                                            <span ng-if="!f.isVatIncl">Prix HT&nbsp;</span>
+                                        </md-switch>
+                                    </div>
+
+                                    <!-- Picture field -->
+                                    <div ng-switch-when="3">
+                                        <h4 flex>{{f.name}}</h4>
+                                        <md-chips ng-model="f[lang].data" class="withPicture" md-autocomplete-snap md-require-match md-on-append="addPictureTofield(j, i, $chip)" flex>
+                                            <md-autocomplete
+                                                    md-min-length="3"
+                                                    md-search-text="searchText"
+                                                    md-search-text-change="null"
+                                                    md-items="item in querySearch(searchText)"
+                                                    md-item-text="item.filename"
+                                                    placeholder="Rechercher une image">
+                                                <span md-highlight-text="searchText">{{item.infos[lang].name}} :: {{item.filename}}</span>
+                                            </md-autocomplete>
+                                            <md-chip-template>
+                                                <span>
+                                                  <img alt="{{ $chip.name }}" ng-src="/media/show/{{$chip._id}}/{{$chip.filename}}" class="md-avatar" />
+                                                  <strong>{{$chip.infos[lang].name}}</strong>
+                                                  <em>({{$chip.filename}})</em>
+                                                </span>
+                                            </md-chip-template>
+                                        </md-chips>
+                                        <p>&nbsp;</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab>
+
+                    <md-tab label="Les Catégories">
+                        <div layout="row" layout-sm="column" layout-wrap>
+                            <md-switch ng-model="c.productIncluded" aria-label="c.name" class="md-primary" ng-repeat="c in categories" flex="30">
+                                {{ c.name }}{{ c.infos.fr.name }}
+                            </md-switch>
+                        </div>
+                    </md-tab>
+                </md-tabs>
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary" ng-disabled="productForm.$invalid" >
+            Sauvegarder
+        </md-button>
+    </div>
+</md-dialog>

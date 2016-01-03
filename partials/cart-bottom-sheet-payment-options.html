@@ -1,0 +1,39 @@
+<md-bottom-sheet id="cartBottomSheetSelectCategory" class="md-list md-has-header">
+    <md-list>
+        <md-subheader class="md-no-sticky">Le paiement de la commande</md-subheader>
+        <md-list-item ng-repeat="p in cart.payments">
+            <md-input-container>
+                <label>Moyen de paiement</label>
+                <md-select ng-model="p.provider_name" ng-disabled="p.provider_processed == 1" ng-click=" $event.stopPropagation();cart.addPayment();">
+                    <md-option ng-repeat="provider in cart.CONSTANTS_PAYMENT_PROVIDER" value="{{provider.id}}">
+                        {{provider.label}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label>Montant</label>
+                <input type="number" step="0.01" ng-model="p.amount" ng-disabled="p.provider_processed == 1" ng-click=" $event.stopPropagation();cart.addPayment();"/>
+            </md-input-container>
+            <span flex></span>
+            <md-checkbox
+                    ng-model="p.status"
+                    aria-label="valider le paiement"
+                    ng-true-value="1"
+                    ng-false-value="0"
+                    ng-click=" $event.stopPropagation();cart.addPayment();"
+                    ng-disabled="p.provider_processed == 1"
+                    class="md-warn"></md-checkbox>
+        </md-list-item>
+        <md-lit-item>
+            <div class="pull-right text-right">
+                TOTAL des paiements {{cart.getPaid()}}<br />
+                TOTAL de la commande {{cart.getAmount(true)}}
+            </div>
+        </md-lit-item>
+        <md-lit-item class="text-center">
+            <div class="alert alert-success clearBoth" role="alert" ng-hide="cart.getReturnMoney() != 0">Le compte est bon !</div>
+            <div class="alert alert-info clearBoth" role="alert" ng-hide="cart.getReturnMoney() < 0.01">Il faut rendre {{cart.getReturnMoney()}} €</div>
+            <div class="alert alert-danger clearBoth" role="alert" ng-hide="cart.getReturnMoney() > -0.01">Il faut encore payé {{cart.getReturnMoney()}} €</div>
+        </md-lit-item>
+    </md-list>
+</md-bottom-sheet>

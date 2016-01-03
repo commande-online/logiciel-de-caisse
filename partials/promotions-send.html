@@ -1,0 +1,23 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+
+
+        <div class="dialog-content">
+            <form id="pageForm">
+                <p>Cela va envoyer un message à tous vos clients !</p>
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary">
+            Sauvegarder
+        </md-button>
+    </div>
+</md-dialog>

@@ -1,0 +1,68 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+
+
+        <div class="dialog-content">
+            <form id="pageForm" name="templateForm">
+                <div layout layout-sm="column">
+                    <md-input-container flex="50">
+                        <label>Titre</label>
+                        <input ng-model="template.name" name="name" required>
+                        <div class="errors" ng-messages="templateForm.name.$error" ng-if="templateForm.$dirty">
+                            <div ng-message="required">Champs obligatoire</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex="50">
+                        <label>Label du prix</label>
+                        <input ng-model="template.labelPriceSelect">
+                    </md-input-container>
+                </div>
+                <div ng-repeat="field in template.fields track by $index">
+                    <div layout layout-sm="column" id="field_{{$index}}">
+                        <input ng-model="field._id.$id" hidden="hidden" />
+                        <md-input-container flex="55">
+                            <label>Nom du champs {{$index+1}}</label>
+                            <input ng-model="field.name" />
+                        </md-input-container>
+                        <md-select placeholder="Type" ng-model="field.type" flex="20">
+                            <md-option value="1">Texte</md-option>
+                            <md-option value="2">Prix</md-option>
+                            <md-option value="3">Image</md-option>
+                            <md-option value="4">Vidéo</md-option>
+                        </md-select>
+                        <div flex="15" class="text-center" style="padding-top: 20px">
+                            <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="template.fields.length-1==$index" ng-click="templateFieldDown($event, $index);">
+                                <md-icon md-font-icon="glyphicons glyphicons-chevron-down"></md-icon>
+                            </md-button>
+                            <md-button class="md-fab md-mini md-warn" aria-label="Up" ng-hide="$index==0" ng-click="templateFieldUp($event, $index);">
+                                <md-icon md-font-icon="glyphicons glyphicons-chevron-up"></md-icon>
+                            </md-button>
+                            <input type="hidden" ng-model="field.position">
+                        </div>
+                        <div flex="10" class="text-center" style="padding-top: 20px">
+                            <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="template.fields.length-1!=$index" ng-click="templateFieldAdd(template);">
+                                <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+                            </md-button>
+                            <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="($index+1)>=template.fields.length" ng-click="templateFieldDel($index);">
+                                <md-icon md-font-icon="glyphicons glyphicons-bin"></md-icon>
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary" ng-disabled="templateForm.$invalid">
+            Sauvegarder
+        </md-button>
+    </div>
+</md-dialog>

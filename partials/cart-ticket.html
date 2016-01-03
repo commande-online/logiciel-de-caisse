@@ -1,0 +1,147 @@
+<md-toolbar class="">
+    <h2 class="md-toolbar-tools">
+        <md-button aria-label="Imprimer la commande" class="md-accent md-raised pull-right md-font glyphicons glyphicons-invoice glyphicons-size-min" ng-click="cartPrint();" ng-disabled="!$parent.cart.isSavable();"></md-button>
+        <md-button aria-label="Plus d'options" class="md-accent md-raised pull-right md-font glyphicons glyphicons-more glyphicons-size-min noSideMargin" ng-click="showCartMoreOptions();" ng-disabled="!$parent.cart.isSavable();"></md-button>
+        <span>Ticket de caisse</span>
+        <md-button aria-label="Moyen de paiement" class="md-accent md-raised pull-right md-font glyphicons glyphicons-money glyphicons-size-min noSideMargin" ng-click="showPaymentOptions();"></md-button>
+        <md-button aria-label="Enregistrer la commande" class="md-accent md-raised pull-right md-font glyphicons glyphicons-floppy-save glyphicons-size-min" ng-click="cartSave();" ng-disabled="!$parent.cart.isSavable();"></md-button>
+    </h2>
+</md-toolbar>
+<md-content>
+    <form  class="mainCartItem">
+        <div layout layout-sm="column" id="delivery_type">
+            <md-button class="md-raised" flex="45" aria-label="Sur place" ng-click="$parent.cart.setDeliveryPartner('ONSITE');" ng-class="{'md-primary': $parent.cart.delivery_partner == 'ONSITE', 'md-accent': $parent.cart.delivery_partner != 'ONSITE'}"><span class="glyphicons glyphicons-dining-set "></span>&nbsp;SUR PLACE</md-button>
+            <md-button class="md-raised" flex="45" aria-label="A emporter" ng-click="$parent.cart.setDeliveryPartner('PICKUP');" ng-class="{'md-primary': $parent.cart.delivery_partner == 'PICKUP', 'md-accent': $parent.cart.delivery_partner != 'PICKUP'}"><span class="glyphicons glyphicons-shopping-bag "></span>&nbsp;A EMPORTER</md-button>
+        </div>
+        <div layout layout-sm="column" ng-hide="$parent.cart.user != undefined && $parent.cart.user != null">
+            <md-autocomplete flex="90"
+                    md-selected-item="$parent.cart.user"
+                    md-selected-item-change="$parent.userSelected()"
+                    md-search-text="searchUser"
+                    md-items="item in findUser(searchUser)"
+                    md-item-text="item.getFullname()"
+                    md-min-length="2"
+                    placeholder="Client">
+                <md-item-template>
+                    <span md-highlight-text="searchUser" md-highlight-flags="^i">{{item.firstname}} {{item.lastname}}</span>
+                </md-item-template>
+                <md-not-found>
+                    Pas de client avec "{{searchUser}}".
+                </md-not-found>
+            </md-autocomplete>
+            <div flex="10">
+                <md-button id="addNewCustomer" aria-label="Créer un nouveau client" class="glyphicons glyphicons-user-add md-primary pull-right" ng-click="newUser()" flex="10"></md-button>
+            </div>
+
+        </div>
+        <div layout layout-sm="column" ng-hide="$parent.cart.user == undefined || $parent.cart.user == null" layout-wrap>
+            <md-input-container flex="90" class="">
+                <label>Client</label>
+                <input ng-model="$parent.cart.user.getFullname()" readonly>
+            </md-input-container>
+            <div flex="10">
+                <md-button id="delNewCustomer" aria-label="Changer de client" class="cartIconAction glyphicons glyphicons-user-remove md-primary pull-right" ng-click="$parent.cart.clearUser();" flex="10"></md-button>
+            </div>
+            <md-input-container flex="90" class="maxWidth">
+                <label>Addresse de Facturation</label>
+                <md-select ng-model="$parent.cart.billing">
+                    <md-option ng-repeat="add in $parent.cart.user.addresses" value="{{add.id}}">{{add.alias}} - {{add.address}} - {{add.zipcode}} - {{add.city}}</md-option>
+                </md-select>
+            </md-input-container>
+            <div flex="10">
+                <md-button aria-label="Créer une nouvelle adresse pour le client" id="" class="cartIconAction glyphicons glyphicons-plus md-primary pull-right" ng-click="editUser()" flex="10"></md-button>
+            </div>
+            <md-input-container flex="90" class="maxWidth">
+                <label>Addresse de Livraison</label>
+                <md-select ng-model="$parent.cart.shipping" ng-change="$parent.cart.checkDeliveryPartner()">
+                    <md-option value="ONSITE" ng-selected="$parent.cart.delivery_partner == 'ONSITE'">SUR PLACE&nbsp;&nbsp;<span class="glyphicons glyphicons-dining-set"></span></md-option>
+                    <md-option value="PICKUP" ng-selected="$parent.cart.delivery_partner == 'PICKUP'">A EMPORTER&nbsp;&nbsp;<span class="glyphicons glyphicons-shopping-bag"></span></md-option>
+                    <md-option ng-repeat="add in $parent.cart.user.addresses" value="{{add.id}}">{{add.alias}} - {{add.address}} - {{add.zipcode}} - {{add.city}}</md-option>
+                </md-select>
+            </md-input-container>
+            <div flex="10">
+                <md-button aria-label="Créer une nouvelle adresse pour le client" id="" class="cartIconAction glyphicons glyphicons-plus md-primary pull-right" ng-click="editUser()" flex="10"></md-button>
+            </div>
+        </div>
+        <div layout layout-sm="column" layout-wrap id="totalCart">
+            <md-input-container flex="60">
+                <label>Total TTC</label>
+                <input ng-model="$parent.cart.getAmount()" readonly>
+            </md-input-container>
+            <md-input-container flex="40">
+                <label>TVA</label>
+                <input ng-model="$parent.cart.getVat()" readonly>
+            </md-input-container>
+        </div>
+        <div ng-hide="hideMoreOptions" class="animate" id="moreOptions">
+            <md-list>
+                <md-subheader class="md-no-sticky">Options supplémentaires sur la commande</md-subheader>
+                <md-list-item>
+                    <p> Statut de la commande </p>
+                    <md-select aria-label="Statut de la commande" ng-model="cart.status">
+                        <md-option ng-repeat="status in cart.CONSTANTS_STATUS" value="{{status.id}}">{{status.label}}</md-option>
+                    </md-select>
+                </md-list-item>
+                <md-list-item>
+                    <p> Heure de livraison </p>
+                    <md-input-container>
+                        <input aria-label="Heure de livraison" type="time" ng-model="cart.delivery_time" />
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item layout>
+                    <p flex="50"> Commentaire sur la commande </p>
+                    <md-input-container flex="50">
+                        <input aria-label="Commentaire de la commande"  ng-model="cart.comment" />
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                    <p> Remise </p>
+                    <md-input-container>
+                        <input  aria-label="Remise de la commande" ng-model="cart.discount" type="number" />
+                    </md-input-container>
+                </md-list-item>
+                <md-subheader class="md-no-sticky">Informations supplémentaires sur la commande</md-subheader>
+                <md-list-item>
+                    <p> Créée <span ng-hide="cart.created_by == undefined">par {{cart.created_by.getFullname()}}</span> le {{cart.created_at | date : medium }} </p>
+                </md-list-item>
+            </md-list>
+        </div>
+        <md-list>
+            <md-list-item class="md-3-line product" ng-repeat="item in $parent.cart.products" layout >
+                <div class="md-list-item-text" layout layout-wrap>
+                    <div flex=60" layout="column" class="flex">
+                        <h3>{{item.name}} - {{templateService.getField(item.price.field).name}}</h3>
+                    </div>
+                    <md-input-container flex="15" class="quantity">
+                        <input aria-label="Quantité" ng-model="item.quantity" type="number" min="0" ng-change="$parent.cart.checkQuantityProduct(item, $index)" >
+                    </md-input-container>
+                    <div flex="25" class="amount">{{$parent.cart.getProductPrice(item.price, item.quantity, item.tags, ($parent.cart.delivery_partner  == 'ONSITE' ? true : false))}}</div>
+                    <div flex="100" class="md-caption" ng-hide="item.tags.length == 0">
+                        <md-chips class="ingredients"
+                                ng-model="item.tags"
+                                md-autocomplete-snap
+                                md-require-match="true"
+                                placeholder="+Ingrédient"
+                                delete-button-label="Supprimer un ingrédient"
+                                secondary-placeholder="+Ingrédient">
+                            <md-autocomplete
+                                    md-selected-item="selectedItem"
+                                    md-search-text="searchIngredient"
+                                    md-items="ingredient in $parent.cart.querySearchIngredients(searchIngredient, item)"
+                                    md-item-text="ingredient.name"
+                                    placeholder="+Ingrédient">
+                                <span md-highlight-text="searchIngredient">
+                                    {{ingredient.name}} +{{ingredient.price}}€
+                                </span>
+                            </md-autocomplete>
+                            <md-chip-template>
+                                <strong>{{$chip.name}}</strong>
+                                <em>+{{$chip.price}}€</em>
+                            </md-chip-template>
+                        </md-chips>
+                    </div>
+                </div>
+            </md-list-item>
+        </md-list>
+    </form>
+</md-content>

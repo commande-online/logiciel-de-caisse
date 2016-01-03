@@ -1,0 +1,319 @@
+html, body {
+    font-family: 'Roboto', sans-serif;
+    font-size:1em;
+    height:100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+.clearBoth {
+    clear: both;
+}
+.pointer{
+    cursor: pointer;
+}
+.noDisplay {
+    display: none;
+}
+#splash, #splash md-toolbar {
+    height: 100%;
+}
+md-tabs.md-dynamic-height md-tab-content.md-active {
+    padding-top: 10px;
+}
+md-toolbar h1, md-toolbar h2, md-toolbar h2.md-toolbar-tools span {
+    margin: auto;
+}
+md-toolbar button span.glyphicons-bell {
+    font-size: 2em;
+}
+.md-subheader.inlineBlocks md-checkbox {
+    display: inline-block;
+}
+.animate.ng-hide-add, .animate.ng-hide-remove {
+    /*transition: all ease 0.5s;*/
+}
+#mainMenuContainer {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+}
+#mainMenuContainer > div#elementMainMenu > a > div > span.glyphicons {
+    font-size: 30px;
+}
+#mainMenuContainer > div#elementMainMenu > a > div.md-tile-content {
+    font-size: 10px;
+}
+#mainMenuContainer > div#elementMainMenu > a {
+    margin: 0px;
+    width: 100%;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+#mainMenuContainer > md-toolbar > a > h1 {
+    color: white;
+}
+#header #notifications > md-icon {
+    padding: 10px;
+}
+md-list > md-item > button > div.name, md-list > md-item > a > div.name {
+    display: inline-block;
+    margin-top: 28px;
+    font-size: 15px;
+}
+#content  {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 5px;
+}
+md-toolbar h1 {
+    font-size: 1.250em;
+    font-weight: 400;
+}
+md-icon.md-action-pin .glyphicons {
+    font-size: 40px;
+}
+md-card-content button.md-button.md-button-large, .tableItems button.md-button.md-button-large  {
+    text-align: center;
+    width: 60px !important;
+    font-size: 20px;
+}
+.tableItems button.md-button.md-button-large md-icon {
+    margin-top: 15px;
+}
+button.md-mini md-icon {
+    margin-top: 10px !important;
+    font-size: 18px;
+}
+
+
+.md-locked-open#mainMenuContainer {
+    z-index:61;
+}
+/*
+md-list .md-button{
+    color: inherit;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+    margin: 0px;
+}*/
+.mainMenuElt {
+    position: relative;
+    width: 128px !important;
+    height: 128px !important;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0px;
+    vertical-align: middle;
+    zoom: 0.70;
+    transform: translateZ(0);
+    -webkit-transform: scale(0.70);
+    -moz-transform: scale(0.70);
+    font-size: 75px;
+    padding: 22px;
+}
+/*.mainMenuElt.md-primary {
+    color : rgb(255,255,255);
+    background-color: rgb(0,188,212);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+}*/
+.mainMenuElt > span {
+    top: 25px;
+    left: 25px;
+    font-size: 75px;
+}
+
+.main-fab.material-button-left {
+    position:absolute;
+    z-index:20;
+    font-size:30px;
+    top:30px;
+    left:24px;
+    transform:scale(.88,.88);
+}
+section md-toolbar .main-fab.material-button-left {
+    font-size: 30px;
+    top:100px;
+}
+section md-toolbar .main-fab.material-button-left button md-icon.glyphicons {
+    font-size: 25px;
+    padding-top: 10px;
+}
+section md-toolbar .md-toolbar-tools {
+    padding-left: 70px;
+}
+#cartForm > div > md-toolbar > h2 {
+    padding-left: 0px;
+}
+md-dialog.form {
+    width: 1000px;
+}
+md-dialog.form md-content {
+    padding: 0px;
+}
+md-dialog.form md-content .dialog-content {
+    padding: 24px;
+}
+md-dialog.form md-select {
+    margin-top: 10px;
+}
+md-dialog.form span.labelSelect {
+    margin-top: 10px;
+    padding-top: 32px;
+    padding-right: 10px;
+}
+md-dialog.form #categoryForm .ta-scroll-window.form-control, md-dialog.form .ta-scroll-window > .ta-bind {
+    min-height: 100px;
+}
+#cartBottomSheetSelectCategory > md-list > md-list-item {
+    height: auto;
+}
+#cartBottomSheetSelectCategory > md-list > md-list-item > button {
+    width: auto;
+}
+.ta-scroll-window > .ta-bind {
+    min-height: 300px !important;
+}
+.afterSelect {
+    margin-top: 30px !important;
+}
+.dragover {
+    background-color: #006dcc;
+}
+.dragover-err {
+    background-color: red;
+}
+.drop-box {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    padding-top: 5px;
+    margin-bottom: 25px;
+    float: left;
+
+}
+table tr td md-chips .md-chips {
+    box-shadow: none;
+}
+md-chips.withPicture > md-chips-wrap > md-chip{
+    height: 60px !important;
+}
+md-chips > md-chips-wrap > md-chip > div.md-chip-content > md-chip-template > span > img {
+    width: 40px;
+    height: 40px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+.glyphicons-size-min {
+    min-width: 35px;
+}
+.noSideMargin {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+/****************
+**  Home Page  **
+****************/
+#homeCarts > md-toolbar > div > button {
+    font-size: 20px;
+}
+#homeCarts > md-toolbar > div > button > span {
+    padding-top: 7px;
+}
+#listCarts button.md-fab, #listCarts a.md-fab {
+    z-index: 1;
+}
+/****************
+** Order Form  **
+****************/
+#listCategories md-toolbar, #listProducts md-toolbar, #listSizes md-toolbar {
+    min-height: 20px;
+    padding: 5px;
+}
+#listCategories md-content {
+    z-index: 4;
+}
+#cartForm button.md-accent.md-raised.pull-right.md-font.glyphicons.md-button {
+    margin-left: 8px;
+    margin-right: 0;
+}
+#cartForm button.md-primary.md-raised.pull-left.md-font.glyphicons.glyphicons-size-min.md-button.md-default-theme {
+    margin-left: 8px;
+}
+#cartForm #delivery_type .glyphicons {
+    font-size: 20px;
+    padding-top: 5px;
+    padding-right: 5px;
+}
+.maxWidth {
+    max-width: 100%;
+}
+#cartBottomSheetSelectCategory > md-list > md-list-item > button > div.ng-binding.ng-scope > span {
+    font-size: 25px;
+}
+#cartForm #addNewCustomer, #cartForm .cartIconAction {
+    margin: 0;
+    min-width: 30px;
+    height: 40px;
+}
+#cartForm #totalCart {
+    margin-top: 5px;
+}
+#cartForm form md-list-item.product {
+    padding-left: 5px;
+    padding-right: 5px;
+    height: auto;
+    margin-top: 15px;
+    min-height: 25px;
+}
+#cartForm form md-list-item.product:nth-child(1) {
+    margin-top: 0px;
+}
+#cartForm .cartIconAction {
+    margin-top: 15px;
+}
+#cartForm md-input-container {
+    padding-bottom: 5px;
+}
+#cartForm .product > div {
+    margin: 0;
+}
+#cartForm .product .quantity {
+    top: -25px;
+    margin-bottom: 0;
+}
+#cartForm .product .amount {
+    margin-top: 0;
+}
+#cartForm .ingredients md-chips-wrap {
+    font-size: 10px;
+}
+#cartForm md-toolbar > h2 > button.md-accent.md-raised.pull-right.md-font.glyphicons.glyphicons-print.glyphicons-size-min.md-button.md-default-theme {
+    margin-left: 8px;
+}
+#cartForm form > md-list > md-list-item {
+}
+#cartForm #moreOptions {
+    font-size: 14px;
+}
+#cartForm #moreOptions md-select, #cartForm #moreOptions md-input-container {
+    margin: 0;
+}
+/*********
+** Home **
+*********/
+#listCarts .actions button, #listCarts .actions a.md-button {
+    padding-top: 6px;
+    width: 35px;
+    font-size: 22px;
+    height: 35px;
+}

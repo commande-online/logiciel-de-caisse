@@ -1,0 +1,51 @@
+<div flex layout="row" id="cartForm" class="" layout-margin layout-fill>
+    <div flex-gt-lg="70" flex="100" class="md-whiteframe-z2 flex">
+        <div id="listCategories">
+            <md-toolbar class="md-warn">
+                <div flex class="text-center">
+                    Catégories
+                </div>
+            </md-toolbar>
+            <md-content layout-padding class="">
+                <section layout="row" layout-align="center center" layout-wrap="">
+                    <md-button aria-label="{{item.name}}" class="md-raised products" ng-repeat="item in listCategories" ng-style="item.getBackgroundColorStyle()" ng-click="selectCategory(item)">{{item.infos.fr.name}}</md-button>
+                </section>
+            </md-content>
+        </div>
+        <div id="listProducts">
+            <md-toolbar class="md-warn">
+                <div flex class="text-center">
+                    Produits
+                    <span ng-hide="currentCat == null"> :: {{currentCat.infos.fr.name}}</span>
+                </div>
+            </md-toolbar>
+            <md-content layout-padding class="">
+                <section layout="row" layout-align="center center" layout-wrap="">
+                    <md-button aria-label="{{item.name}}" class="md-raised products" ng-repeat="item in listProducts" ng-style="item.getBackgroundColorStyle()" ng-disabled="!item.inCategory(currentCat)" ng-click="showSelectProduct($event, item)" ng-hide="!item.inCategory(currentCat) && hideProducts">{{item.name}}</md-button>
+                </section>
+            </md-content>
+        </div>
+        <div id="listSizes">
+            <md-toolbar class="md-warn">
+                <div flex class="text-center">
+                    Tailles
+                    <span ng-hide="currentProduct == null"> :: {{currentProduct.name}}</span>
+                </div>
+            </md-toolbar>
+            <md-content layout-padding class="">
+                <section layout="row" layout-align="center center" layout-wrap="">
+                    <md-button class="md-raised md-grid-item-content" ng-style="item.getBackgroundColorStyle()" ng-click="listItemClick(currentProduct, item, 1);" ng-repeat="item in currentProduct.prices">
+                        <span>{{templateService.getField(item.field).name}}</span>
+                        <span>{{parsePrice(item)}} &euro;</span>
+                    </md-button>
+                </section>
+            </md-content>
+
+        </div>
+
+
+    </div>
+    <div flex-gt-lg="30" flex show-gt-lg hide-lg hide-md hide-sm class="md-whiteframe-z2 flex" ng-include="'partials/cart-ticket.html'">
+    </div>
+</div>
+

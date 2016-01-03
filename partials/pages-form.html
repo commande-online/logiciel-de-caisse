@@ -1,0 +1,77 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+
+
+
+        <div class="dialog-content">
+            <form id="pageForm" name="pageForm">
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="Informations Générals">
+                        <div layout layout-sm="column">
+                            <md-input-container flex="66">
+                                <label>URL</label>
+                                <input ng-model="page.name" readonly>
+                            </md-input-container>
+                            <md-input-container flex="33">
+                                <label>Version</label>
+                                <input ng-model="page.versions.length" readonly>
+                            </md-input-container>
+                        </div>
+                        <md-input-container flex>
+                            <label>Titre</label>
+                            <input ng-model="page.title" name="title" required>
+                            <div class="errors" ng-messages="pageForm.title.$error" ng-if="pageForm.$dirty">
+                                <div ng-message="required">Champs obligatoire</div>
+                            </div>
+                        </md-input-container>
+                        <md-chips flex="100"
+                                  ng-model="page.tags"
+                                  placeholder="Ajouter un tag"
+                                  delete-button-label="Supprimer"
+                                  secondary-placeholder="+Tag"></md-chips>
+
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <md-switch ng-model="page.comment" ng-true-value="1" ng-false-value="0" class="md-primary">
+                                    Commentaires
+                                </md-switch>
+                            </md-input-container>
+                            <md-input-container flex layout="row">
+                                <!-- label flex="40">Langue {{page.lang}}</label -->
+                                <md-select ng-model="page.lang" placeholder="Langue" name="lang" flex="60" required>
+                                    <md-option  ng-repeat="l in availableLanguages" ng-value="l.key">{{l.name}}</md-option>
+                                </md-select>
+                                <div class="errors afterSelect" ng-messages="pageForm.lang.$error" ng-if="pageForm.$dirty" flex="40">
+                                    <div ng-message="required">Champs obligatoire</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </md-tab>
+                    <md-tab label="Texte">
+                        <md-input-container flex>
+                            <text-angular ng-model="page.versions[page.versions.length - 1].text"></text-angular>
+                        </md-input-container>
+                        <p>Pour ajouter une image provenant de votre ordinateur dans votre texte, il suffit de glisser-déposer l'image directement dans le texte.</p>
+                    </md-tab>
+                    <md-tab label="Liens vers traductions">
+                        <md-input-container flex ng-repeat="l in availableLanguages" ng-hide="l.id == page.lang">
+                            <label>Lien {{l.text}}</label>
+                            <input ng-model="l.link">
+                        </md-input-container>
+                    </md-tab>
+                </md-tabs>
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary" ng-disabled="pageForm.$invalid">
+            Sauvegarder
+        </md-button>
+    </div>
+</md-dialog>

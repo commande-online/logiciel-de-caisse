@@ -1,0 +1,89 @@
+<md-dialog class="form">
+    <md-content class="sticky-container">
+        <md-toolbar class="md-accent">
+            <h3 class="text-center">{{title}}</h3>
+        </md-toolbar>
+        <div class="dialog-content">
+            <form id="userForm" name="userForm">
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="Informations Générales">
+                        <div layout layout-sm="column">
+                            <md-input-container flex="50">
+                                <label>Prénom</label>
+                                <input ng-model="user.firstname" name="firstname" required>
+                                <div class="errors" ng-messages="userForm.firstname.$error" ng-if="userForm.$dirty">
+                                    <div ng-message="required">Champs obligatoire</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex="50">
+                                <label>Nom</label>
+                                <input ng-model="user.lastname" name="lastname" required>
+                                <div class="errors" ng-messages="userForm.lastname.$error" ng-if="userForm.$dirty">
+                                    <div ng-message="required">Champs obligatoire</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout layout-sm="column">
+                            <md-input-container flex="50">
+                                <label>Numéro de téléphone</label>
+                                <input ng-model="user.phone" name="phone" required>
+                                <div class="errors" ng-messages="userForm.phone.$error" ng-if="userForm.$dirty">
+                                    <div ng-message="required">Champs obligatoire</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex="50">
+                                <label>Adresse email</label>
+                                <input ng-model="user.email" name="email">
+                            </md-input-container>
+                        </div>
+                        <md-checkbox aria-label="promotions du site" ng-model="user.optin_site" class="md-primary" ng-true-value="1" ng-false-value="0">
+                            Est-ce que le client veut recevoir de l'information de votre site ?
+                        </md-checkbox>
+                        <md-checkbox aria-label="promotions des partenaires" ng-model="user.optin_affiliate" ng-disabled="true"  class="md-primary" ng-true-value="1" ng-false-value="0">
+                            Est-ce que le client veut recevoir de l'information de nos partenaires ?
+                        </md-checkbox>
+                    </md-tab>
+                    <md-tab label="Adresse {{$index}} :: {{address.alias}}" ng-repeat="address in user.addresses" md-on-select="checkToAddATabForAddress($index)">
+                        <div layout layout-sm="column" layout-wrap>
+                            <md-input-container flex="50">
+                                <label>Nom identificant l'adresse</label>
+                                <input ng-model="user.addresses[$index].alias" />
+                            </md-input-container>
+                            <md-input-container flex="50">
+                                <label>Nom de la personne réceptionnant la commande</label>
+                                <input ng-model="user.addresses[$index].fullname" />
+                            </md-input-container>
+                            <md-input-container flex="100">
+                                <label>Adresse</label>
+                                <input ng-model="user.addresses[$index].address" />
+                            </md-input-container>
+                            <md-input-container flex="20">
+                                <label>Code postal</label>
+                                <input ng-model="user.addresses[$index].zipcode" />
+                            </md-input-container>
+                            <md-input-container flex="40">
+                                <label>Ville</label>
+                                <input ng-model="user.addresses[$index].city" />
+                            </md-input-container>
+                            <md-input-container flex="40">
+                                <label>Pays</label>
+                                <input ng-model="user.addresses[$index].country" />
+                            </md-input-container>
+                        </div>
+                        <md-checkbox aria-label="Adresse par défaut?" ng-model="user.addresses[$index].isDefault" class="md-primary" ng-true-value="1" ng-false-value="0">
+                            Adresse par défaut pour le client ?
+                        </md-checkbox>
+                    </md-tab>
+                </md-tabs>
+            </form>
+        </div>
+    </md-content>
+    <md-dialog-actions layout="row">
+        <md-button ng-click="cancel()">
+            Annuler
+        </md-button>
+        <md-button ng-click="confirm()" class="md-primary"  ng-disabled="userForm.$invalid">
+            Sauvegarder
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

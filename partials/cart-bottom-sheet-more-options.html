@@ -1,0 +1,33 @@
+<md-bottom-sheet id="cartBottomSheetSelectCategory" class="md-list md-has-header">
+    <md-list>
+        <md-subheader class="md-no-sticky">Options supplémentaires sur la commande</md-subheader>
+        <md-list-item>
+            <p> Statut de la commande </p>
+            <md-select aria-label="Statut de la commande" ng-model="cart.status">
+                <md-option ng-repeat="status in cart.CONSTANTS_STATUS" value="{{status.id}}">{{status.label}}</md-option>
+            </md-select>
+        </md-list-item>
+        <md-list-item>
+            <p> Heure de livraison </p>
+            <md-input-container>
+                <input aria-label="Heure de livraison" type="time" ng-model="cart.delivery_time" />
+            </md-input-container>
+        </md-list-item>
+        <md-list-item layout>
+            <p flex="50"> Commentaire sur la commande </p>
+            <md-input-container flex="50">
+                <input aria-label="Commentaire de la commande"  ng-model="cart.comment" />
+            </md-input-container>
+        </md-list-item>
+        <md-list-item>
+            <p> Remise </p>
+            <md-input-container>
+                <input  aria-label="Remise de la commande" ng-model="cart.discount" type="number" />
+            </md-input-container>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">Informations supplémentaires sur la commande</md-subheader>
+        <md-list-item>
+            <p> Créée <span ng-hide="cart.created_by == undefined">par {{cart.created_by.getFullname()}}</span> le {{cart.created_at | date : medium }} </p>
+        </md-list-item>
+    </md-list>
+</md-bottom-sheet>
