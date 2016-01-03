@@ -56,4 +56,5 @@ Thumbs.db
 # Bower modules
 # just in case
 libs
-
+node_modules
+coverage

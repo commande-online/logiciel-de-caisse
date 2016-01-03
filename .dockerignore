@@ -1,1 +1,4 @@
 .idea
+libs
+node_modules
+coverage
