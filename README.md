@@ -2,6 +2,8 @@
 
 Logiciel de caisse Open Source par commande-online.fr SAS avec license GNU GPL
 
+[![Build Status](https://travis-ci.org/commande-online/logiciel-de-caisse.svg?branch=master)](https://travis-ci.org/commande-online/logiciel-de-caisse)
+
 'WORK IN PROGRESS'
 
 'EN COURS DE DEVELOPPEMENT'
@@ -26,6 +28,6 @@ Karma and Jasmine needs to be installed :
 3. npm install -g karma-jasmine jasmine-core
 4. npm install -g karma-chrome-launcher
 5. npm install -g karma-coverage
-6. npm install angular-mocks
+6. npm install angular-mocks --save-dev
 
 I've followed this tutorial : https://www.airpair.com/angularjs/posts/unit-testing-angularjs-applications
