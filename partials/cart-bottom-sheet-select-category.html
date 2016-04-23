@@ -4,7 +4,7 @@
             <md-button class="md-raised md-grid-item-content" ng-style="item.getBackgroundColorStyle()" ng-click="listItemClick(item);">
                 <div>
                     {{item.infos.fr.name}}
-                    &nbsp;<span class="glyphicons glyphicons-check" ng-hide="hideCheck(item)"></span>
+                    &nbsp;<ng-md-icon icon="check" ng-hide="hideCheck(item)"></ng-md-icon>
                 </div>
             </md-button>
         </md-list-item>

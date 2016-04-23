@@ -1,7 +1,7 @@
 var DOMAIN_API = ""; //http://apero-pizza-etc.commande-online.fr";
 
 var app = angular
-    .module('starterApp', ['ngMaterial', 'ngCookies', 'ngMessages', 'textAngular', 'minicolors', 'ui.router', 'ngFileUpload', 'ui.tree', 'angular-jwt', 'main', 'customers', 'menu', 'pages', 'templates', 'categories', 'products','promotions', 'carts', 'medias', 'users', 'indexedDB', 'shops'], function($httpProvider) {
+    .module('starterApp', ['ngMaterial', 'ngMdIcons', 'ui.grid', 'ngCookies', 'ngMessages', 'textAngular', 'minicolors', 'ui.router', 'ngFileUpload', 'ui.tree', 'angular-jwt', 'main', 'customers', 'menu', 'pages', 'templates', 'categories', 'products','promotions', 'carts', 'medias', 'users', 'indexedDB', 'shops'], function($httpProvider) {
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
         /**

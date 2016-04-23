@@ -17,101 +17,101 @@
             {
                 name: 'Accueil',
                 url: 'home',
-                logo: 'glyphicons glyphicons-home',
+                logo: 'home',
                 subMenu: null
             },
             {
                 name: 'Commande',
                 url: 'cart',
-                logo: 'glyphicons glyphicons-shopping-cart',
+                logo: 'shopping_cart',
                 subMenu: null
             },
             {
                 name: 'Clients',
                 url: 'customers',
-                logo: 'glyphicons glyphicons-parents',
+                logo: 'people',
                 subMenu: null
             },
             {
                 name: 'Informations',
                 url: 'promotions',
-                logo: 'glyphicons glyphicons-wifi-alt',
+                logo: 'share',
                 subMenu: null
             },
             {
                 name: 'Produits',
                 url: '#',
-                logo: 'glyphicons glyphicons-vases',
+                logo: 'class',
                 subMenu: [{
                         name: 'Mes Produits',
                         url: 'products',
-                        logo: 'glyphicons glyphicons-vases'
+                        logo: 'class'
                     },
                     {
                         name: 'Mes fiches produits',
                         url: 'templates',
-                        logo: 'glyphicons glyphicons-notes'
+                        logo: 'note'
                     },
                     {
                         name: 'Mes Catégories',
                         url: 'categories',
-                        logo: 'glyphicons glyphicons-sort'
+                        logo: 'my_library_books'
                     }
                 ]
             },
             {
                 name: 'Pages',
                 url: 'pages',
-                logo: 'glyphicons glyphicons-edit',
+                logo: 'message',
                 subMenu: null
             },
             {
                 name: 'Diaporamas',
                 url: 'diaporamaController',
-                logo: 'glyphicons glyphicons-picture',
+                logo: 'view_carousel',
                 subMenu: null
             },
             {
                 name: 'Medias',
                 url: 'medias',
-                logo: 'glyphicons glyphicons-folder-open',
+                logo: 'perm_media',
                 subMenu: null
             },
             {
                 name: 'Configuration',
                 url: '#',
-                logo: 'glyphicons glyphicons-shop-window',
+                logo: 'store_mall_directory',
                 subMenu: [{
                         name: 'Générales',
                         url: 'shopController',
-                        logo: 'glyphicons glyphicons-shop-window'
+                        logo: 'store_mall_directory'
                     },
                     {
                         name: 'Produits',
                         url: 'shopController',
-                        logo: 'glyphicons glyphicons-vases'
+                        logo: 'class'
                     },
                     {
                         name: 'Paiements',
                         url: 'shopController',
-                        logo: 'glyphicons glyphicons-money'
+                        logo: 'payment'
                     },
                     {
                         name: 'Réseaux sociaux',
                         url: 'shopController',
-                        logo: 'glyphicons glyphicons-group'
+                        logo: 'facebook-box'
                     },
                     {
                         name: 'Base de données',
                         url: 'shop-database',
-                        logo: 'glyphicons glyphicons-database'
+                        logo: 'loop'
                     }
                 ]
             },
             {
                 name: 'Statistiques',
                 url: 'statsController',
-                logo: 'glyphicons glyphicons-stats',
+                logo: 'timeline',
                 subMenu: null
             }
         ];

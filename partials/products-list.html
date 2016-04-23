@@ -43,7 +43,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in listProducts | filter:search | orderBy:orderByField:reverseSort" id="product_{{item._id}}">
+                <tr ng-repeat="item in listProducts | filter:search | orderBy:orderByField:reverseSort track by item._id" id="product_{{item._id}}">
                     <td>{{item._id}}</td>
                     <td class="text-left">
                         <h4>{{item.name}}</h4>

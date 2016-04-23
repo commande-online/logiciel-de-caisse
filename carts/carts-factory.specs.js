@@ -1,3 +1,5 @@
+DOMAIN_API = "";
+
 describe("Factory : Cart : Default value / setters / getters", function() {
     var Cart;
 

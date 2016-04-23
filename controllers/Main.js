@@ -2,14 +2,14 @@
     angular
         .module('main')
         .controller('MainController', [
-            '$interval', '$mdSidenav', '$http', '$mdBottomSheet', '$q', '$scope', '$location', '$state', '$mdToast', '$mdDialog', '$cookieStore','$rootScope','languageService', 'productService', 'cartService', 'mediaService', 'templateService', 'promotionService', 'categoryService', 'pageService', 'userService', 'indexedDBService', 'jwtHelper',
+            '$interval', '$mdSidenav', '$http', '$mdBottomSheet', '$q', '$scope', '$location', '$state', '$mdToast', '$mdDialog', '$cookieStore','$rootScope','languageService', 'productService', 'cartService', 'mediaService', 'templateService', 'promotionService', 'categoryService', 'pageService', 'userService', 'indexedDBService', 'jwtHelper', '$window',
             MainController
         ]).controller('ConnectionController', [
             'elt', '$mdDialog', '$scope',
             ConnectionController
         ]);
 
-    function MainController( $interval, $mdSidenav, $http, $mdBottomSheet, $q, $scope, $location, $state, $mdToast, $mdDialog, $cookieStore, $rootScope, languageService, productService, cartService, mediaService, templateService, promotionService, categoryService, pageService, userService, indexedDBService, jwtHelper) {
+    function MainController( $interval, $mdSidenav, $http, $mdBottomSheet, $q, $scope, $location, $state, $mdToast, $mdDialog, $cookieStore, $rootScope, languageService, productService, cartService, mediaService, templateService, promotionService, categoryService, pageService, userService, indexedDBService, jwtHelper, $window) {
         console.log("maincontroller");
         var self = this;
         self.version = "0.1";
@@ -78,6 +78,8 @@
 
         $rootScope.loadingApp = true;
         function loadingApp() {
+
+            $window.location.href = "#/home";
             var promise = indexedDBService.init(/*true*/);
             promise.then(function(data) {
                 if(data) {

@@ -2,7 +2,7 @@
     angular
         .module('users')
         .controller('UsersListController', [
-            'userService', '$mdDialog', '$log', '$q', '$scope', '$mdToast', '$rootScope', '$location', 'User',
+            'userService', '$mdDialog', '$log', '$q', '$scope', '$filter', '$rootScope', '$location', 'User',
             UsersListController
         ])
         .controller('UsersEditController', ['elt', '$mdDialog', '$scope', 'User',
@@ -10,25 +10,47 @@
         ]);
 
 
-    function UsersListController(userService, $mdDialog, $log, $q, $scope, $mdToast, $rootScope, $location, User) {
+    function UsersListController(userService, $mdDialog, $log, $q, $scope, $filter, $rootScope, $location, User) {
         var self = this;
 
         // For the height of the list
         var decreaseForMaxHeight = 250;
         $("#listUsers").height(window.innerHeight - decreaseForMaxHeight);
-
         $(window).on("resize.doResize", function () {
             $scope.$apply(function () {
                 $("#listUsers").height(window.innerHeight - decreaseForMaxHeight);
             });
         });
-
         $scope.$on("$destroy", function () {
             $(window).off("resize.doResize"); //remove the handler added earlier
         });
         // End of the height thingy
 
         $scope.listUsers = userService.getUsers();
+        $scope.gridData = {
+            enableSorting: true,
+            rowHeight: 70,
+            expandableRowHeight: 700,
+            columnDefs: [
+                { name:'ID', field: '_id', width: '10%' },
+                { name:'Name', width: '70%', cellTemplate: '' +
+                '<div class="ui-grid-cell-contents" ng-class="col.colIndex()">' +
+                    '<img ng-src="{{row.entity.profilePicture}}" class="md-avatar" alt="{{row.entity.getFullname()}}" ng-hide="!row.entity.profilePicture" />'+
+                    '<strong>{{row.entity.getFullname()}}</strong><br />' +
+                    '{{row.entity.phone}} - {{row.entity.email}}' +
+                '</div>'},
+                { name:'Action', width: '20%', cellTemplate: '' +
+                '<div class="ui-grid-cell-contents" title="TOOLTIP" layout="row" layout-align="center center">' +
+                    '<div><md-button class="md-fab md-warm iconInCircle md-button-large" aria-label="Création" ng-click="grid.appScope.createCart($event, row.entity);"><ng-md-icon icon="shopping_cart" size="40"></ng-md-icon></md-button></div>' +
+                    '<div><md-button class="md-fab md-warm iconInCircle md-button-large" aria-label="Edition" ng-click="grid.appScope.editUser($event, row.entity);"><ng-md-icon icon="edit" size="40"></ng-md-icon></md-button></div>'+
+                '</div>'}
+            ],
+            data : $scope.listUsers
+        };
+
+        $scope.refreshData = function () {
+            $scope.gridData.data = $filter('filter')($scope.listUsers, $scope.searchText, undefined);
+        };
 
         $scope.createCart = function(ev, user) {
             $location.url("/cart").search({user: user._id});
@@ -84,28 +106,6 @@
                     });
                     console.log("OK");
                 }, function() { /* CANCEL */ });
-        };
-
-        $scope.showConfirmDeleteCategory = function(ev, category) {
-            var confirm = $mdDialog.confirm()
-                .title('Êtes vous sur de vouloir supprimer la catégorie "' + category.name + '" ?')
-                .content('Attention, si vous supprimer la catégorie, il n\'y a pas de retour arrière possible.')
-                .ok('OUI')
-                .cancel('Annuler')
-                .targetEvent(ev);
-            $mdDialog.show(confirm).then(function() {
-                category.delete(function (data) {
-                    if(data.OK == 1) {
-                        categoryService.resetCategories();
-                        $scope.listCategories = categoryService.getCategories();
-
-                        $rootScope.$broadcast('addNotification', 'La catégorie a bien été supprimée');
-                    } else {
-                        $rootScope.$broadcast('errorApi', data);
-                    }
-                });
-
-            }, function() {});
         };
     }
 

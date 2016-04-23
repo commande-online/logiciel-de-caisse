@@ -3,8 +3,8 @@
         <span flex></span>
 
         <div class="main-fab material-button-left">
-            <button class="md-fab md-accent md-button md-default-theme" ng-click="newUser($event);">
-                <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+            <button class="md-fab md-accent md-button md-default-theme iconInCircle" ng-click="newUser($event);">
+                <ng-md-icon icon="add" size="40"></ng-md-icon>
             </button>
         </div>
 
@@ -15,65 +15,14 @@
                 </div>
                 <span flex ng-hide='toggleSearch'></span>
                 <md-input-container flex style='' ng-show='toggleSearch'>
-                    <input type='text' ng-model='search.$' aria-label="Chercher un client" />
+                    <input type='text' ng-model='searchText' ng-change="refreshData()" aria-label="Chercher un client" />
                 </md-input-container>
                 <div layout="row" class="md-toolbar-item md-tools">
-                    <a ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme" tabindex="0"><span class="glyphicons glyphicons-search"></span></a>
+                    <a ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme iconSearch" tabindex="0"><ng-md-icon icon="search"></ng-md-icon></a>
                 </div>
             </div>
         </div>
     </md-toolbar>
-    <md-content id="listUsers" class="md-padding text-center" style="">
-        <table class="table tableItems">
-            <thead>
-            <tr>
-                <th width="0%">ID</th>
-                <th width="100%">
-                    <a ng-click="orderByField='shortDescription'; reverseSort = !reverseSort">
-                        Nom
-                    </a>
-                </th>
-                <th width="0%" class="text-center">
-                    <a ng-click="orderByField='item.sendDate.sec'; reverseSort = !reverseSort">
-                        Dernier&nbsp;achat
-                    </a>
-                </th>
-                <th width="0%" class="text-center">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="item in listUsers | filter:search | orderBy:orderByField:reverseSort track by item._id" id="user_{{item._id}}">
-                <td>{{item._id}}</td>
-                <td class="text-left">
-                    <img ng-src="{{item.profilePicture}}" class="md-avatar" alt="{{item.getFullname()}}" ng-hide="!item.profilePicture" />
-                    <strong>{{item.getFullname()}}</strong><br />
-                    {{item.phone}} - {{item.email}}
-                </td>
-                <td class="text-center">
-                    NA
-                </td>
-                <td>
-                    <div layout="row">
-                        <div flex>
-                            <md-button class="md-fab md-warm md-button-large" aria-label="Edition" ng-click="createCart($event, item);">
-                                <md-icon md-font-icon="glyphicons glyphicons-shopping-cart"></md-icon>
-                            </md-button>
-                        </div>
-                        <div flex>
-                            <md-button class="md-fab md-warm md-button-large" aria-label="Edition" ng-click="editUser($event, item);">
-                                <md-icon md-font-icon="glyphicons glyphicons-pencil"></md-icon>
-                            </md-button>
-                        </div>
-                        <div flex>
-                            <md-button class="md-fab md-warm md-button-large" aria-label="Suppression" ng-click="showConfirmDeleteCategory($event, item);" ng-disabled="item.products.length > 0">
-                                <md-icon md-font-icon="glyphicons glyphicons-bin"></md-icon>
-                            </md-button>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </md-content>
+    <div ui-grid="gridData" id="listUsers" class="myGrid"></div>
 </section>
 <p>&nbsp;</p>

@@ -38,11 +38,11 @@ md-toolbar button span.glyphicons-bell {
     max-width: 110px;
     min-width: 110px;
 }
-#mainMenuContainer > div#elementMainMenu > a > div > span.glyphicons {
-    font-size: 30px;
-}
 #mainMenuContainer > div#elementMainMenu > a > div.md-tile-content {
     font-size: 10px;
+}
+#mainMenuContainer > div#elementMainMenu > a > div.md-tile-content.picto {
+    height: 30px;
 }
 #mainMenuContainer > div#elementMainMenu > a {
     margin: 0px;
@@ -220,6 +220,17 @@ md-chips > md-chips-wrap > md-chip > div.md-chip-content > md-chip-template > sp
     margin-left: 0px;
     margin-right: 0px;
 }
+button.iconInCircle ng-md-icon {
+    position: relative;
+    top: 7px;
+}
+a.iconSearch ng-md-icon {
+    position: relative;
+    top: 5px;
+}
+.myGrid {
+    height: 75vh;
+}
 /****************
 **  Home Page  **
 ****************/
@@ -243,8 +254,11 @@ md-chips > md-chips-wrap > md-chip > div.md-chip-content > md-chip-template > sp
     z-index: 4;
 }
 #cartForm button.md-accent.md-raised.pull-right.md-font.glyphicons.md-button {
+    width: 36px;
+    min-width: 36px;
     margin-left: 8px;
     margin-right: 0;
+    padding-top: 10px;
 }
 #cartForm button.md-primary.md-raised.pull-left.md-font.glyphicons.glyphicons-size-min.md-button.md-default-theme {
     margin-left: 8px;
@@ -264,6 +278,10 @@ md-chips > md-chips-wrap > md-chip > div.md-chip-content > md-chip-template > sp
     margin: 0;
     min-width: 30px;
     height: 40px;
+}
+#cartForm #addNewCustomer ng-md-icon, #cartForm #delNewCustomer ng-md-icon, #cartForm #addAddress ng-md-icon  {
+    position: relative;
+    top: 10px;
 }
 #cartForm #totalCart {
     margin-top: 5px;

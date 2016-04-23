@@ -55,6 +55,18 @@
                     $rootScope.$broadcast('errorApi', data);
                 });
             };
+            User.prototype.load = function (id, next) {
+                var scope = this;
+                return $http.get(URL_API + id).success(function(data) {
+                    scope.constructor(data);
+                    if(next)
+                        next(data);
+                }).error(function(data, status) {
+                    scope._id = -1;
+                    scope.error_api = data;
+                    $rootScope.$broadcast('errorApi', data);
+                });
+            };
             User.prototype.delete = function(next) {
                 $http.delete(URL_API + this._id).success(function(data, status) {
                     next(data);

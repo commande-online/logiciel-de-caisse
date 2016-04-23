@@ -24,22 +24,32 @@
 
                 if(db && users.length == 0) {
                     // If we have a DB we load all the information from the DB
-                    transaction = db.transaction([nameTable], "readonly");
-                    store = transaction.objectStore(nameTable).index("statusIndex");
-                    var boundKeyRange = IDBKeyRange.only(1);
-                    store.openCursor(boundKeyRange).onsuccess = function(event) {
-                        var cursor = event.target.result;
-                        if (cursor) {
-                            var user = User.build(cursor.value);
-                            users.push(user);
-                            cursor.continue();
-                        }
-                    };
-                    store.openCursor(boundKeyRange).onerror = function(event) {
-                        $log.warn("cursor error", event);
-                    };
+                    $log.debug("looking in the DB for the users");
+                    this.loadDBUsers();
                 }
+
                 return users;
+            },
+            loadDBUsers: function() {
+                var deferred = $q.defer();
+                var db = indexedDBService.getDB();
+                transaction = db.transaction([nameTable], "readonly");
+                store = transaction.objectStore(nameTable);
+                store.openCursor().onsuccess = function (event) {
+                    var cursor = event.target.result;
+                    if (cursor) {
+                        var user = User.build(cursor.value);
+                        users.push(user);
+                        cursor.continue();
+                    } else {
+                        deferred.resolve(users);
+                    }
+                };
+                store.openCursor().onerror = function (event) {
+                    $log.warn("cursor error", event);
+                };
+
+                return deferred.promise;
             },
             addUser: function(user) {
                 var founded = false;
@@ -55,6 +65,8 @@
                     since = new Date();
                     since.setMinutes(since.getMinutes() - 10);
                 }
+                var promise = this.loadDBUsers();
+
                 var db = indexedDBService.getDB();
                 var _this = this;
 

@@ -5,6 +5,6 @@
   "AttachStderr": true,
   "OpenStdin": true,
   "HostConfig": {
-    "PortBindings":{ "80/tcp": [{ "HostIp": "0.0.0.0", "HostPort": "8080" }] }
+    "PortBindings":{ "80/tcp": [{ "HostIp": "0.0.0.0", "HostPort": "8090" }] }
   }
 }

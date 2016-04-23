@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="./libs/jquery-minicolors/jquery.minicolors.css" />
     <link rel="stylesheet" href="./assets/app-bo.css"/>
     <!-- link rel="stylesheet" href="assets/compiled.css"/ -->
-    <link rel="stylesheet" href="http://www.commande-online.fr/css/glyphicons.css" />
+    <link rel="styleSheet" href="./libs/angular-ui-grid/ui-grid.min.css"/>
 </head>
 
 <body ng-app="starterApp" layout="column" ng-controller="MainController as main">
@@ -43,8 +43,8 @@
         <md-button ng-repeat-start="it in menu.mainMenu" layout="column" layout-align="center center"
                    flex class="capitalize" ng-click="main.selectPage(it)"
                    ui-sref-active="md-warn" ui-sref="{{it.url}}">
-            <div hide-sm hide-md class="md-tile-content">
-                <span class="{{it.logo}}"></span>
+            <div hide-sm hide-md class="md-tile-content picto">
+                <ng-md-icon icon="{{it.logo}}" style="fill:grey" size="40"></ng-md-icon>
             </div>
             <div class="md-tile-content">
                 {{it.name}}
@@ -63,7 +63,7 @@
             </md-button>
             <h1>Logiciel de Caisse - {{main.selectedPage.name}}</h1>
             <md-button id="notifications" class="menu lead" ng-click="main.toggleMainMenu()" aria-label="Les notifications">
-                <md-icon md-font-icon="glyphicons glyphicons-bell" ></md-icon> {{main.notifications.length}}
+                <ng-md-icon icon="notifications" style="fill:white"></ng-md-icon> {{main.notifications.length}}
             </md-button>
         </md-toolbar>
 
@@ -74,7 +74,7 @@
                     <md-list layout="column">
                         <md-item ng-repeat="it in main.subMenu" flex="100" layout>
                             <md-button href="#/{{it.url}}" ng-click="main.selectSubPage(it)" ng-class="{'selected' : it === menu.selected }" flex="100">
-                                <md-icon md-font-icon="{{it.logo}}" class="mainMenuElt md-hue-1"></md-icon>
+                                <ng-md-icon icon="{{it.logo}}" style="fill:black" size="40"></ng-md-icon>
                                 <div class="name">{{it.name}}</div>
                             </md-button>
                         </md-item>
@@ -107,6 +107,10 @@
 <script src="./libs/ng-file-upload/ng-file-upload-all.min.js"></script>
 <script src="./libs/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
 <script src="./libs/angular-jwt/dist/angular-jwt.js"></script>
+<script src="./libs/angular-ui-grid/ui-grid.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.7.0/angular-material-icons.min.js"></script>
 
 
 <script src="./modules/Main.js"></script>
