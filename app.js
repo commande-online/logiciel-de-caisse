@@ -1,4 +1,4 @@
-var DOMAIN_API = ""; //http://apero-pizza-etc.commande-online.fr";
+var DOMAIN_API = "http://dev-site.seb:8080";
 
 var app = angular
     .module('starterApp', ['ngMaterial', 'ngMdIcons', 'ui.grid', 'ngCookies', 'ngMessages', 'textAngular', 'minicolors', 'ui.router', 'ngFileUpload', 'ui.tree', 'angular-jwt', 'main', 'customers', 'menu', 'pages', 'templates', 'categories', 'products','promotions', 'carts', 'medias', 'users', 'indexedDB', 'shops'], function($httpProvider) {
@@ -65,7 +65,12 @@ var app = angular
                 'hue-2': '50',
                 'hue-3': 'A100'
             })
-            .accentPalette('grey')
+            .accentPalette('grey', {
+                default: '300',
+                'hue-1': '500',
+                'hue-2': '100',
+                'hue-3': '700'
+            })
             .warnPalette('blue-grey');
 
         $stateProvider.state('customers', {

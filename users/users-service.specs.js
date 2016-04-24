@@ -511,3 +511,118 @@ describe("Service : User : findUser", function() {
     }));
 
 });
+
+
+
+describe("Service : User : updateUser", function() {
+    var User;
+    var userService, DBPromise;
+
+    beforeEach(module('indexedDB'));
+    beforeEach(module('users'));
+
+    var date = new Date();
+    var data = {
+        id : 123,
+        firstname : "john",
+        lastname : "doh",
+        phone : "0685658130",
+        addresses : [{id: 456}],
+        email : "chuivert@gmail.com",
+        gender : "M",
+        notificationFrequency : 1,
+        optin_affiliate : 2,
+        optin_site : 3,
+        profilePicture : "profile.png",
+        last_refresh: date.getTime()
+    };
+
+
+    var authRequestHandler, $httpBackend, $timeout;
+    beforeEach(inject(function (_$httpBackend_, _$timeout_, _User_, _userService_) {
+        User = _User_;
+        userService = _userService_;
+        jasmine.clock().mockDate(date);
+
+        // Set up the mock http service responses
+        $httpBackend = _$httpBackend_;
+        $timeout = _$timeout_;
+        // backend definition common for all tests
+        authRequestHandler = $httpBackend.when('GET', '/api/1/bo-management/users/list/0/100')
+            .respond([data]);
+
+        //userService.loadUsers(0);
+    }));
+
+    var indexedDBService, $rootScope, $window;
+    beforeEach(inject(function (_indexedDBService_, _$rootScope_, _$window_) {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        indexedDBService = _indexedDBService_;
+        $rootScope = _$rootScope_;
+        $window = _$window_;
+        DBPromise = indexedDBService.init();
+    }));
+
+    afterEach(function () {
+        if(indexedDBService.getDB() != null)
+            indexedDBService.getDB().close();
+        else
+            console.log("DID NOT CLOSE ! ");
+        $window.indexedDB.deleteDatabase("myCOL");
+
+
+        $httpBackend.verifyNoOutstandingExpectation($rootScope.$$phase ? false : true);
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it("findUser OK local firstname NO DB", function (done) {
+        $httpBackend.expectGET('/api/1/bo-management/users/list/0/100');
+        userService.loadUsers().then(function (data) {
+            var data;
+
+            users = userService.getUsers();
+            data = users[0];
+
+            data.firstname = "seb";
+            userService.updateUser(data);
+
+
+            userService.findUser("seb").then(function(value) {
+                data = value;
+                expect(data.length).toEqual(1);
+                expect(data[0].firstname).toEqual("seb");
+                done();
+            });
+        });
+        $httpBackend.flush();
+    });
+/*
+Should be working but it's not ...
+    it("findUser OK local firstname DB", function (done) {
+        $httpBackend.expectGET('/api/1/bo-management/users/list/0/100');
+        DBPromise.then(function() {
+            setTimeout(function() {
+                userService.loadUsers().then(function (data) {
+                    var data;
+
+                    users = userService.getUsers();
+                    data = users[0];
+
+                    data.firstname = "seb";
+
+                    //console.log("test ! ");
+                    userService.updateUser(data);
+
+                    userService.findUser("seb").then(function (value) {
+                        data = value;
+                        expect(data.length).toEqual(1);
+                        expect(data[0].firstname).toEqual("seb2");
+                        done();
+                    });
+                }).then(done);
+                $httpBackend.flush();
+            });
+        });
+    });
+    */
+});

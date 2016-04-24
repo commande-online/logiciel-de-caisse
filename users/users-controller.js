@@ -2,7 +2,7 @@
     angular
         .module('users')
         .controller('UsersListController', [
-            'userService', '$mdDialog', '$log', '$q', '$scope', '$filter', '$rootScope', '$location', 'User',
+            'userService', '$mdDialog', '$log', '$timeout', '$scope', '$filter', '$rootScope', '$location', 'User',
             UsersListController
         ])
         .controller('UsersEditController', ['elt', '$mdDialog', '$scope', 'User',
@@ -10,7 +10,7 @@
         ]);
 
 
-    function UsersListController(userService, $mdDialog, $log, $q, $scope, $filter, $rootScope, $location, User) {
+    function UsersListController(userService, $mdDialog, $log, $timeout, $scope, $filter, $rootScope, $location, User) {
         var self = this;
 
         // For the height of the list
@@ -28,6 +28,12 @@
 
         $scope.listUsers = userService.getUsers();
         $scope.gridData = {
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+                $timeout(function() {
+                    $scope.gridApi.core.handleWindowResize();
+                });
+            },
             enableSorting: true,
             rowHeight: 70,
             expandableRowHeight: 700,
@@ -41,7 +47,7 @@
                 '</div>'},
                 { name:'Action', width: '20%', cellTemplate: '' +
                 '<div class="ui-grid-cell-contents" title="TOOLTIP" layout="row" layout-align="center center">' +
-                    '<div><md-button class="md-fab md-warm iconInCircle md-button-large" aria-label="Création" ng-click="grid.appScope.createCart($event, row.entity);"><ng-md-icon icon="shopping_cart" size="40"></ng-md-icon></md-button></div>' +
+                    '<div ng-hide="grid.appScope.user"><md-button class="md-fab md-warm iconInCircle md-button-large" aria-label="Création" ng-click="grid.appScope.createCart($event, row.entity);"><ng-md-icon icon="shopping_cart" size="40"></ng-md-icon></md-button></div>' +
                     '<div><md-button class="md-fab md-warm iconInCircle md-button-large" aria-label="Edition" ng-click="grid.appScope.editUser($event, row.entity);"><ng-md-icon icon="edit" size="40"></ng-md-icon></md-button></div>'+
                 '</div>'}
             ],
@@ -85,6 +91,7 @@
         $scope.editUser= function(ev, u) {
             var user = angular.copy(u);
             $log.info("Edit user : " + user._id);
+            $log.debug(u);
             $mdDialog.show({
                 controller: UsersEditController,
                 templateUrl: 'partials/users-form.html',
@@ -96,7 +103,7 @@
                 .then(function(answer) {
                     user.save(function (data) {
                         if(data.OK == 1) {
-                            //categoryService.resetCategories();
+                            userService.updateUser(user);
                             $scope.listUsers = userService.getUsers();
 
                             $rootScope.$broadcast('addNotification', 'Le client a bien été mis à jour');

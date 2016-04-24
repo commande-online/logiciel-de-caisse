@@ -2,14 +2,14 @@
     angular
         .module('main')
         .controller('MainController', [
-            '$interval', '$mdSidenav', '$http', '$mdBottomSheet', '$q', '$scope', '$location', '$state', '$mdToast', '$mdDialog', '$cookieStore','$rootScope','languageService', 'productService', 'cartService', 'mediaService', 'templateService', 'promotionService', 'categoryService', 'pageService', 'userService', 'indexedDBService', 'jwtHelper', '$window',
+            '$interval', '$mdSidenav', '$http', '$mdBottomSheet', '$q', '$scope', '$location', '$state', '$mdToast', '$mdDialog', '$cookieStore','$rootScope','languageService', 'productService', 'cartService', 'mediaService', 'templateService', 'promotionService', 'categoryService', 'pageService', 'userService', 'indexedDBService', 'jwtHelper', '$window', '$log',
             MainController
         ]).controller('ConnectionController', [
             'elt', '$mdDialog', '$scope',
             ConnectionController
         ]);
 
-    function MainController( $interval, $mdSidenav, $http, $mdBottomSheet, $q, $scope, $location, $state, $mdToast, $mdDialog, $cookieStore, $rootScope, languageService, productService, cartService, mediaService, templateService, promotionService, categoryService, pageService, userService, indexedDBService, jwtHelper, $window) {
+    function MainController( $interval, $mdSidenav, $http, $mdBottomSheet, $q, $scope, $location, $state, $mdToast, $mdDialog, $cookieStore, $rootScope, languageService, productService, cartService, mediaService, templateService, promotionService, categoryService, pageService, userService, indexedDBService, jwtHelper, $window, $log) {
         console.log("maincontroller");
         var self = this;
         self.version = "0.1";
@@ -64,7 +64,8 @@
 
 
         $scope.$on('errorApi', function(event, args) {
-            if(args.code == -1) {
+            $log.debug("error", args);
+            if(!args.code || args.code == -1) {
                 connection();
             } else {
                 $mdToast.show(
@@ -282,6 +283,7 @@
                     loadingApp();
                 }).
                 error(function (data, status, headers, config) {
+                    console.log(data);
                     alert(data.message);
                 });
         }
