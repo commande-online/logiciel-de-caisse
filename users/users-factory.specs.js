@@ -51,8 +51,7 @@ describe("Factory : User : Default value / setters / getters", function() {
         expect(u.firstname).toEqual(data.firstname);
         expect(u.lastname).toEqual(data.lastname);
         expect(u.phone).toEqual(data.phone);
-        expect(u.addresses.length).toEqual(1);
-        expect(u.addresses).toContain(data.addresses[0]);
+        expect(u.addresses.length).toEqual(0);
         expect(u.email).toEqual(data.email);
         expect(u.gender).toEqual(data.gender);
         expect(u.notificationFrequency).toEqual(data.notificationFrequency);
@@ -84,8 +83,7 @@ describe("Factory : User : Default value / setters / getters", function() {
         expect(u.firstname).toEqual(data.firstname);
         expect(u.lastname).toEqual(data.lastname);
         expect(u.phone).toEqual(data.phone);
-        expect(u.addresses.length).toEqual(1);
-        expect(u.addresses).toContain(data.addresses[0]);
+        expect(u.addresses.length).toEqual(0);
         expect(u.email).toEqual(data.email);
         expect(u.gender).toEqual(data.gender);
         expect(u.notificationFrequency).toEqual(data.notificationFrequency);
@@ -289,7 +287,7 @@ describe("Factory : User : getDefaultAddress ", function() {
         firstname : "john",
         lastname : "doh",
         phone : "0685658130",
-        addresses : [{id: 456, isDefault: false}, {id: 789, isDefault: true}],
+        addresses : [{id: 456,  isDefault: false, address: "test test", city: "city", zipcode: "code"}, {id: 789, isDefault: true, address: "test test", city: "city", zipcode: "code"}],
         email : "chuivert@gmail.com",
         gender : "M",
         notificationFrequency : 1,
@@ -326,7 +324,7 @@ describe("Factory : User : save", function() {
         firstname : "john",
         lastname : "doh",
         phone : "0685658130",
-        addresses : [{id: 456, isDefault: false}, {id: 789, isDefault: true}],
+        addresses : [{id: 456,  isDefault: false, address: "test test", city: "city", zipcode: "code"}, {id: 789, isDefault: true, address: "test test", city: "city", zipcode: "code"}],
         email : "chuivert@gmail.com",
         gender : "M",
         notificationFrequency : 1,
@@ -362,7 +360,7 @@ describe("Factory : User : save", function() {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it("saving a user : OK", function() {
+    it("saving a user with Addresses : OK", function() {
         $httpBackend.expectPOST('/api/1/bo-management/users/');
 
         var c = new User();
@@ -374,6 +372,18 @@ describe("Factory : User : save", function() {
     });
 
     it("saving an existing user : OK", function() {
+        $httpBackend.expectPOST('/api/1/bo-management/users/456');
+
+        var c = new User();
+        c._id = 456;
+
+        c.save(function(data){});
+        $httpBackend.flush();
+
+        expect(c._id).toEqual(456);
+    });
+
+    it("saving an existing user with NOK Addresses : OK", function() {
         $httpBackend.expectPOST('/api/1/bo-management/users/456');
 
         var c = new User();

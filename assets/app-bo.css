@@ -198,7 +198,7 @@ md-dialog.form #categoryForm .ta-scroll-window.form-control, md-dialog.form .ta-
     float: left;
 
 }
-table tr td md-chips .md-chips {
+table tr td md-chips .md-chips,  .ui-grid md-chips .md-chips {
     box-shadow: none;
 }
 md-chips.withPicture > md-chips-wrap > md-chip{
@@ -334,4 +334,10 @@ a.iconSearch ng-md-icon {
     width: 35px;
     font-size: 22px;
     height: 35px;
+}
+/************
+** UI GRID **
+************/
+.ui-grid-top-panel {
+    background: #f3f3f3 !important;
 }

@@ -18,12 +18,13 @@
                 if(addresses == undefined) {
                     this.addresses = [];
                 } else {
-                    this.addresses = addresses;
-
+                    this.addresses = [];
                     for(var i = 0; i < addresses.length; i++) {
-                        if(this.addresses[i].isDefault) this.addresses[i].isDefault = 1;
-                        else this.addresses[i].isDefault = 0;
+                        if(addresses[i].isDefault) addresses[i].isDefault = 1;
+                        else addresses[i].isDefault = 0;
 
+                        if(addresses[i].address && addresses[i].city && addresses[i].zipcode)
+                            this.addresses.push(addresses[i]);
                     }
                 }
                 this.email = email;
