@@ -102,6 +102,11 @@
                         categories.createIndex("statusIndex", "status", { unique: false });
                         categories.createIndex("last_refreshIndex", "last_refresh", { unique: false });
                     }
+                    if(!db.objectStoreNames.contains("config")) {
+                        var config = db.createObjectStore("config",
+                        {keyPath: "_id"});
+                        config.createIndex("typeIndex", "type", { unique: false });
+                    }
                     if(!db.objectStoreNames.contains("templates")) {
                         var templates = db.createObjectStore("templates",
                             {keyPath: "_id"});
