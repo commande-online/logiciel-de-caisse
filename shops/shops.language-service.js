@@ -14,7 +14,29 @@
         var typeTable = "language";
 
         return {
-            getLanguages: function() {
+            /**
+             * Load all the languages already stores
+             * @param noDb only for unit testing purposes
+             * @returns {Array}
+             */
+            getLanguages: function(noDb) {
+                if(noDb) {
+                    // We don't want to query the DB
+                } else
+                    this.getLanguagesDB();
+                return languages;
+            },
+            loadLanguages: function() {
+                var _this = this;
+                return $http.get(URL_API).then(function(date) {
+                    languages = date.data;
+                    _this.saveLanguagesDB(languages);
+                });
+            },
+            /***************************************
+             *****      DB related methods      ****
+             **************************************/
+            getLanguagesDB: function() {
                 var db = indexedDBService.getDB();
 
                 if(db && languages.length == 0) {
@@ -33,24 +55,29 @@
                         $log.warn("cursor error", event);
                     };
                 }
-
-                return languages;
             },
-            loadLanguages: function() {
+            /**
+             * save the languages in the DB
+             *
+             * @param langs from the API request
+             * @param local only used for unit testing
+             */
+            saveLanguagesDB: function(langs, local) {
                 var db = indexedDBService.getDB();
 
-                return $http.get(URL_API).then(function(date) {
-                    languages = date.data;
+                if(db) {
+                    // For unit testing purposes
+                    if(local)
+                        languages = langs;
 
-                    if(db) {
-                        transaction = db.transaction([nameTable], "readwrite");
-                        store = transaction.objectStore(nameTable);
+                    transaction = db.transaction([nameTable], "readwrite");
+                    store = transaction.objectStore(nameTable);
 
-                        for(var i = 0; i < languages.length; i++) {
-                            store.put({_id: languages[i].key, lang: languages[i], type: typeTable});
-                        }
+                    for(var i = 0; i < langs.length; i++) {
+                        store.put({_id: langs[i].key, lang: langs[i], type: typeTable});
                     }
-                });
+                }
+
             }
         };
     }

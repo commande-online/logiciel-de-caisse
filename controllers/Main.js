@@ -146,6 +146,10 @@
                     }
                 } else {
                     // Nothing to do
+                    // Pre-loading the DB for important stuff
+                    categoryService.getCategories();
+
+                    // Handling the splash
                     var infoInterval = $interval(function () {
                         if ($http.pendingRequests.length == 0) {
                             //console.log("OK");

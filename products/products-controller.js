@@ -5,7 +5,7 @@
             '$mdDialog', '$log', '$q', '$scope', '$filter', 'Product', '$mdToast', '$rootScope', '$timeout', 'productService',
             ProductsListController
         ]).controller('ProductsEditController', [
-            'elt', '$mdDialog', '$scope', 'Product', '$filter', 'Template', 'Category', 'Media', 'languageService', 'categoryService', 'templateService',
+            'elt', '$mdDialog', '$scope', 'Product', '$log', 'Template', 'Category', 'Media', 'languageService', 'categoryService', 'templateService',
             ProductsEditController
         ]);
 
@@ -182,7 +182,7 @@
         };
     }
 
-    function ProductsEditController(elt, $mdDialog, $scope, Product, $filter, Template, Category, Media, languageService, categoryService, templateService) {
+    function ProductsEditController(elt, $mdDialog, $scope, Product, $log, Template, Category, Media, languageService, categoryService, templateService) {
         $scope.availableLanguages = languageService.getLanguages();
         $scope.lang = "fr";
 
@@ -193,10 +193,12 @@
         $scope.selectedItem = null;
 
         // Load all the medias
+        // Load all templates
         Media.loadAll(function(medias) {
             for (var i = 0; i < medias.length; i++)
                 $scope.listMedias.push(medias[i]);
 
+            // Loading all templates
             var templates = templateService.getTemplates();
             for (var i = 0; i < templates.length; i++) {
                 for (var j = 0; j < templates[i].fields.length; j++) {
@@ -254,6 +256,7 @@
 
             $scope.templates = templates;
         });
+        // End of Media load all
 
         $scope.addPictureTofield = function(t, f, m) {
             if(t != undefined && f != undefined && m != undefined) {
@@ -309,6 +312,22 @@
         $scope.product = elt;
         $scope.currentTemplate = elt.template;
         $scope.categories = categoryService.getCategories();
+
+        // Mapping the categories to display the right switch
+        indexCat = elt.categories.map(function(el) {
+            return el._id.$id;
+        });
+        // Adding the productIncluded into the cats
+        for(var i = 0; i < $scope.categories.length; i++) {
+            if(indexCat.indexOf($scope.categories[i]._id) > -1) {
+                $scope.categories[i].productIncluded = true;
+                //$log.debug("OK", indexCat.indexOf($scope.categories[i]._id), $scope.categories[i]._id);
+            }
+            else {
+                //$log.debug("NOK", indexCat.indexOf($scope.categories[i]._id), $scope.categories[i]._id);
+            }
+        }
+        // End of mapping for the categories
 
         $scope.hide = function() {
             $mdDialog.hide();
