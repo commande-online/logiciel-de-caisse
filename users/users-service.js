@@ -60,12 +60,38 @@
                 if(!founded)
                     users.push(user);
             },
+            updateUser: function(user) {
+                var db = indexedDBService.getDB();
+                if(db) {
+                    transaction = db.transaction([nameTable], "readwrite");
+                    store = transaction.objectStore(nameTable);
+                    var request = store.put(user);
+
+                    request.onsuccess = function (e) {
+                        $log.debug("User has been updated", user._id);
+
+                        var founded = false;
+                        for (var i = 0; i < users.length && !founded; i++) {
+                            if (users[i]._id == user._id)
+                                users[i] = user;
+                        }
+                    };
+                    request.onerror = function (e) {
+                        $log.error("Error while updating user ", user);
+                    };
+                } else {
+                    var founded = false;
+                    for (var i = 0; i < users.length && !founded; i++) {
+                        if (users[i]._id == user._id)
+                            users[i] = user;
+                    }
+                }
+            },
             updateUsers: function(since) {
                 if(!since) {
                     since = new Date();
                     since.setMinutes(since.getMinutes() - 10);
                 }
-                var promise = this.loadDBUsers();
 
                 var db = indexedDBService.getDB();
                 var _this = this;

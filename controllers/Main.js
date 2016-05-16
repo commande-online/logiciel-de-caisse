@@ -2,14 +2,14 @@
     angular
         .module('main')
         .controller('MainController', [
-            '$interval', '$mdSidenav', '$http', '$mdBottomSheet', '$q', '$scope', '$location', '$state', '$mdToast', '$mdDialog', '$cookieStore','$rootScope','languageService', 'productService', 'cartService', 'mediaService', 'templateService', 'promotionService', 'categoryService', 'pageService', 'userService', 'indexedDBService', 'jwtHelper', '$window',
+            '$interval', '$mdSidenav', '$http', '$mdBottomSheet', '$q', '$scope', '$location', '$state', '$mdToast', '$mdDialog', '$cookieStore','$rootScope','languageService', 'productService', 'cartService', 'mediaService', 'templateService', 'promotionService', 'categoryService', 'pageService', 'userService', 'indexedDBService', 'jwtHelper', '$window', '$log',
             MainController
         ]).controller('ConnectionController', [
             'elt', '$mdDialog', '$scope',
             ConnectionController
         ]);
 
-    function MainController( $interval, $mdSidenav, $http, $mdBottomSheet, $q, $scope, $location, $state, $mdToast, $mdDialog, $cookieStore, $rootScope, languageService, productService, cartService, mediaService, templateService, promotionService, categoryService, pageService, userService, indexedDBService, jwtHelper, $window) {
+    function MainController( $interval, $mdSidenav, $http, $mdBottomSheet, $q, $scope, $location, $state, $mdToast, $mdDialog, $cookieStore, $rootScope, languageService, productService, cartService, mediaService, templateService, promotionService, categoryService, pageService, userService, indexedDBService, jwtHelper, $window, $log) {
         console.log("maincontroller");
         var self = this;
         self.version = "0.1";
@@ -64,7 +64,8 @@
 
 
         $scope.$on('errorApi', function(event, args) {
-            if(args.code == -1) {
+            $log.debug("error", args);
+            if(!args.code || args.code == -1) {
                 connection();
             } else {
                 $mdToast.show(
@@ -82,10 +83,10 @@
             $window.location.href = "#/home";
             var promise = indexedDBService.init(/*true*/);
             promise.then(function(data) {
+                languageService.loadLanguages();
                 if(data) {
                     if(data.init) {
                         // Init DB
-                        languageService.loadLanguages().then(function () {
                             productService.loadProducts().then(function () {
                                 cartService.loadCarts().then(function () {
                                     userService.loadUsers().then(function () {
@@ -116,36 +117,39 @@
                                     });
                                 });
                             });
-                        })
                     } else {
                         // Update
                         var dateSince = new Date(indexedDBService.getLastUpdate());
-                        cartService.updateCarts(dateSince).then(function() {
-                            productService.updateProducts(dateSince).then(function() {
-                                userService.updateUsers(dateSince).then(function () {
-                                    categoryService.updateCategories(dateSince).then(function () {
-                                        templateService.updateTemplates(dateSince).then(function () {
-                                            var infoInterval = $interval(function () {
-                                                if ($http.pendingRequests.length == 0) {
-                                                    //console.log("OK");
-                                                    $scope.hideSplash = true;
-                                                    $scope.hideSplashLoading = true;
-                                                    $rootScope.loadingApp = false;
-                                                    $interval.cancel(infoInterval);
-                                                    indexedDBService.update();
-                                                    console.log(indexedDBService.getLastConnection());
-                                                } else {
-                                                    //console.log("not yet");
-                                                }
-                                            }, 1000);
+                            cartService.updateCarts(dateSince).then(function () {
+                                productService.updateProducts(dateSince).then(function () {
+                                    userService.updateUsers(dateSince).then(function () {
+                                        categoryService.updateCategories(dateSince).then(function () {
+                                            templateService.updateTemplates(dateSince).then(function () {
+                                                var infoInterval = $interval(function () {
+                                                    if ($http.pendingRequests.length == 0) {
+                                                        //console.log("OK");
+                                                        $scope.hideSplash = true;
+                                                        $scope.hideSplashLoading = true;
+                                                        $rootScope.loadingApp = false;
+                                                        $interval.cancel(infoInterval);
+                                                        indexedDBService.update();
+                                                        console.log(indexedDBService.getLastConnection());
+                                                    } else {
+                                                        //console.log("not yet");
+                                                    }
+                                                }, 1000);
+                                            });
                                         });
                                     });
                                 });
                             });
-                        });
                     }
                 } else {
                     // Nothing to do
+                    // Pre-loading the DB for important stuff
+                    categoryService.getCategories();
+
+                    // Handling the splash
                     var infoInterval = $interval(function () {
                         if ($http.pendingRequests.length == 0) {
                             //console.log("OK");
@@ -282,6 +286,7 @@
                     loadingApp();
                 }).
                 error(function (data, status, headers, config) {
+                    console.log(data);
                     alert(data.message);
                 });
         }

@@ -44,6 +44,9 @@ module.exports = function(config) {
         'users/users-factory.js',
         'users/users-service.js',
 
+        'shops/shops-factory.js',
+        'shops/shops.language-service.js',
+
         // To be replaced
         'modules/*.js',
         'services/*.js',
@@ -65,7 +68,8 @@ module.exports = function(config) {
         'templates/templates-factory.specs.js',
         'templates/templates-service.specs.js',
         'users/users-factory.specs.js',
-        'users/users-service.specs.js'
+        'users/users-service.specs.js',
+        'shops/shops.language-service.specs.js'
 
     ],
 

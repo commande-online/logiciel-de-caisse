@@ -2,14 +2,14 @@
     angular
         .module('products')
         .controller('ProductsListController', [
-            '$mdDialog', '$log', '$q', '$scope', '$sce', 'Product', '$mdToast', '$rootScope', '$timeout', 'productService',
+            '$mdDialog', '$log', '$q', '$scope', '$filter', 'Product', '$mdToast', '$rootScope', '$timeout', 'productService',
             ProductsListController
         ]).controller('ProductsEditController', [
-            'elt', '$mdDialog', '$scope', 'Product', '$filter', 'Template', 'Category', 'Media', 'languageService', 'categoryService', 'templateService',
+            'elt', '$mdDialog', '$scope', 'Product', '$log', 'Template', 'Category', 'Media', 'languageService', 'categoryService', 'templateService',
             ProductsEditController
         ]);
 
-    function ProductsListController($mdDialog, $log, $q, $scope, $sce, Product, $mdToast, $rootScope, $timeout, productService) {
+    function ProductsListController($mdDialog, $log, $q, $scope, $filter, Product, $mdToast, $rootScope, $timeout, productService) {
         var self = this;
         var decreaseForMaxHeight = 250;
         $scope.listProducts = productService.getProducts();
@@ -27,7 +27,82 @@
         $scope.$on("$destroy",function (){
             $(window).off("resize.doResize"); //remove the handler added earlier
         });
+        // End height
 
+
+        $scope.gridData = {
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+                $timeout(function() {
+                    $scope.gridApi.core.handleWindowResize();
+                });
+            },
+            enableSorting: true,
+            rowHeight: 100,
+            expandableRowHeight: 700,
+            columnDefs: [
+                { name:'ID', field: '_id', width: '10%' },
+                { name:'Titre', width: '40%', cellTemplate: '' +
+                    '<div class="ui-grid-cell-contents" ng-class="col.colIndex()">' +
+                    '<h4>{{row.entity.name}}</h4>'+
+                    '<md-chips ng-model="row.entity.categories" readonly="true">'+
+                        '<md-chip-template>'+
+                            '{{$chip.infos.fr.name}}{{$chip.name}}'+
+                        '</md-chip-template>'+
+                    '</md-chips>'+
+                    '</div>'
+                },
+                { name:'Dernière modif', width: '10%', cellTemplate: '' +
+                    '<div class="ui-grid-cell-contents text-center" ng-class="col.colIndex()">'+
+                    '{{row.entity.logStatus[row.entity.logStatus.length - 1].date.sec * 1000 | date:\'shortDate\'}}'+
+                    '</div>'
+                },
+                { name:'Informations', width: '20%', cellTemplate :'' +
+                    '<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">'+
+                        '<div flex="25">'+
+                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Champs" title="Champs">'+
+                                '<ng-md-icon icon="art_track" style="fill:white"></ng-md-icon> {{row.entity.fields.length + row.entity.prices.length}}'+
+                            '</md-button>'+
+                        '</div>'+
+                        '<div flex="25">'+
+                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Tags" title="Tags">'+
+                                '<ng-md-icon icon="more" style="fill:white"></ng-md-icon> {{row.entity.tags.length}}'+
+                            '</md-button>'+
+                        '</div>'+
+                        '<div flex="25">'+
+                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Commentaires" title="Commentaires">'+
+                                '<ng-md-icon icon="comments" style="fill:white"></ng-md-icon> {{row.entity.comments.length}}'+
+                            '</md-button>'+
+                        '</div>'+
+                        '<div flex="25">'+
+                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Catégories" title="Catégories">'+
+                                '<ng-md-icon icon="my_library_books" style="fill:white"></ng-md-icon> {{row.entity.categories.length}}'+
+                            '</md-button>'+
+                        '</div>'+
+                    '</div>'
+
+                },
+                { name:'Action', width: '20%', cellTemplate: '' +
+                    '<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">' +
+                        '<div>' +
+                            '<md-button class="md-fab md-warm md-button-large iconInCircle" aria-label="Edition" ng-click="grid.appScope.editProduct($event, row.entity);">'+
+                                '<ng-md-icon icon="edit" size="40"></ng-md-icon>'+
+                            '</md-button>'+
+                        '</div>'+
+                        '<div>' +
+                            '<md-button class="md-fab md-warm md-button-large iconInCircle" aria-label="Suppression" ng-click="grid.appScope.showConfirmDeleteProduct($event, row.entity);">'+
+                                '<ng-md-icon icon="delete" size="40"></ng-md-icon>'+
+                            '</md-button>'+
+                        '</div>' +
+                    '</div>'
+                }
+            ],
+            data : $scope.listProducts
+        };
+
+        $scope.refreshData = function () {
+            $scope.gridData.data = $filter('filter')($scope.listProducts, $scope.searchText, undefined);
+        };
 
         // Create a new product by opening a dialog with an empty product
         $scope.newProduct = function(ev) {
@@ -107,7 +182,7 @@
         };
     }
 
-    function ProductsEditController(elt, $mdDialog, $scope, Product, $filter, Template, Category, Media, languageService, categoryService, templateService) {
+    function ProductsEditController(elt, $mdDialog, $scope, Product, $log, Template, Category, Media, languageService, categoryService, templateService) {
         $scope.availableLanguages = languageService.getLanguages();
         $scope.lang = "fr";
 
@@ -118,10 +193,12 @@
         $scope.selectedItem = null;
 
         // Load all the medias
+        // Load all templates
         Media.loadAll(function(medias) {
             for (var i = 0; i < medias.length; i++)
                 $scope.listMedias.push(medias[i]);
 
+            // Loading all templates
             var templates = templateService.getTemplates();
             for (var i = 0; i < templates.length; i++) {
                 for (var j = 0; j < templates[i].fields.length; j++) {
@@ -179,6 +256,7 @@
 
             $scope.templates = templates;
         });
+        // End of Media load all
 
         $scope.addPictureTofield = function(t, f, m) {
             if(t != undefined && f != undefined && m != undefined) {
@@ -234,6 +312,22 @@
         $scope.product = elt;
         $scope.currentTemplate = elt.template;
         $scope.categories = categoryService.getCategories();
+
+        // Mapping the categories to display the right switch
+        indexCat = elt.categories.map(function(el) {
+            return el._id.$id;
+        });
+        // Adding the productIncluded into the cats
+        for(var i = 0; i < $scope.categories.length; i++) {
+            if(indexCat.indexOf($scope.categories[i]._id) > -1) {
+                $scope.categories[i].productIncluded = true;
+                //$log.debug("OK", indexCat.indexOf($scope.categories[i]._id), $scope.categories[i]._id);
+            }
+            else {
+                //$log.debug("NOK", indexCat.indexOf($scope.categories[i]._id), $scope.categories[i]._id);
+            }
+        }
+        // End of mapping for the categories
 
         $scope.hide = function() {
             $mdDialog.hide();
