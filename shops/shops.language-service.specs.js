@@ -50,6 +50,7 @@ describe("Service : Language : loadLanguages & getLanguages : NO DB", function()
         $httpBackend.flush();
     });
 });
+/*
 describe("Service : Language : saveLanguagesDB", function() {
     var languageService, DBPromise;
 
