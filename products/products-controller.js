@@ -236,7 +236,6 @@
                                             value: field._id.$id,
                                             data: $scope.listMediaForField(field._id.$id)
                                         };
-                                        console.log(field._id.$id, templates[i].fields[j][field.lang]);
                                     } else {
                                         templates[i].fields[j][$scope.availableLanguages[n].key] = {data: []};
                                     }
@@ -270,7 +269,7 @@
          * @returns {*}
          */
         $scope.addPictureTofield = function(t, f, m, lang) {
-            console.log(t,f,m);
+            //console.log(t,f,m);
             if(t != undefined && f != undefined && m != undefined) {
                 if(!$scope.templates[t].fields[f].data)
                     $scope.templates[t].fields[f].data = [];

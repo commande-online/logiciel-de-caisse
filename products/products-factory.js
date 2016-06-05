@@ -148,8 +148,7 @@
                 this.prices.push(price);
             };
             Product.prototype.addField = function(field, allLanguage) {
-                console.log("field input", field);
-                var f = {field: field._id.$id, infos: {}, type: field.type};
+                var f = {field: field._id.$id, infos: {}, type: field.type, lang: field.lang};
 
                 for(var i = 0; i < allLanguage.length; i++) {
                     if(field[allLanguage[i].key] != undefined && (field[allLanguage[i].key].value != undefined || field[allLanguage[i].key].data != undefined) && field[allLanguage[i].key].value != "") {
@@ -164,7 +163,6 @@
                         }
                     }
                 }
-                console.log("field updated to be added", f);
 
                 this.fields.push(f);
             };

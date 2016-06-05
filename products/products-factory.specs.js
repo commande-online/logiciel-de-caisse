@@ -334,6 +334,78 @@ describe("Factory : Product : getPriceById", function() {
     });
 });
 
+describe("Factory : Product : addPrice", function() {
+    var Product;
+    var date = new Date();
+    //{field: field._id.$id, value: field.value, value_onsite: field.value_onsite, vat: field.vat, isVatIncl: field.isVatIncl, stock: field.stock};
+    var fields = [
+        {_id: {$id: 123456}, value: 1, value_onsite: 2, vat: 3, isVatIncl: 4, stock: 5},
+        {_id: {$id: 987654}, value: 9, value_onsite: 8, vat: 7, isVatIncl: 6, stock: 0}
+    ];
+
+    beforeEach(module('products'));
+    beforeEach(inject(function (_Product_) {
+        Product = _Product_;
+    }));
+
+    it("adding two prices", function() {
+        p = new Product();
+        p.addPrice(fields[0]);
+        p.addPrice(fields[1]);
+
+        expect(p.prices.length).toEqual(fields.length);
+
+        for(var i = 0; i < fields.length; i++) {
+            var price = p.getPrice(fields[i]._id.$id);
+            expect(price.field).toEqual(fields[i]._id.$id);
+            expect(price.value).toEqual(fields[i].value);
+            expect(price.value_onsite).toEqual(fields[i].value_onsite);
+            expect(price.vat).toEqual(fields[i].vat);
+            expect(price.isVatIncl).toEqual(fields[i].isVatIncl);
+            expect(price.stock).toEqual(fields[i].stock);
+        }
+    });
+});
+
+describe("Factory : Product : addField", function() {
+    var Product;
+    var date = new Date();
+    //{field: field._id.$id, infos: {}, type: field.type};
+    //{value: field[allLanguage[i].key].value, lang: allLanguage[i].key};
+    //f.infos[allLanguage[i].key].value.push(field[allLanguage[i].key].data[n]._id);
+    var fields = [
+        {_id: {$id: 123456}, type: 1, fr: {value: "blabla"}, lang: "fr"},
+        {_id: {$id: 987654}, type: 3, en: {data: [{_id: "abcdef"}, {_id: "zyxuv"}]}, lang: "en"}
+    ];
+    var lang = [{key:"fr"}, {key:"it"}, {key:"en"}];
+
+    beforeEach(module('products'));
+    beforeEach(inject(function (_Product_) {
+        Product = _Product_;
+    }));
+
+    it("adding two fields (one text & one image)", function() {
+        p = new Product();
+        p.addField(fields[0], lang);
+        p.addField(fields[1], lang);
+
+        expect(p.fields.length).toEqual(fields.length);
+
+        for(var i = 0; i < fields.length; i++) {
+            var f = p.getField(fields[i]._id.$id, fields[i].lang);
+            expect(f).not.toBeNull();
+            expect(f.field).toEqual(fields[i]._id.$id);
+            expect(f.type).toEqual(fields[i].type);
+            if(fields[i].type != 3)
+                expect(f.infos[fields[i].lang].value).toEqual(fields[i][fields[i].lang].value);
+            else {
+                for(var j = 0; j < fields[i][fields[i].lang].data.length; j++)
+                    expect(f.infos[fields[i].lang].value[j]).toEqual(fields[i][fields[i].lang].data[j]._id);
+            }
+        }
+    });
+});
+
 describe("Factory : Product : inCategory", function() {
     var Product;
     var date = new Date();
