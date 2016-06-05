@@ -148,6 +148,7 @@
                     // Nothing to do
                     // Pre-loading the DB for important stuff
                     categoryService.getCategories();
+                    templateService.getTemplates();
 
                     // Handling the splash
                     var infoInterval = $interval(function () {

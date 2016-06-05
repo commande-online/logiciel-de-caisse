@@ -148,23 +148,23 @@
                 this.prices.push(price);
             };
             Product.prototype.addField = function(field, allLanguage) {
-                console.log(field);
+                console.log("field input", field);
                 var f = {field: field._id.$id, infos: {}, type: field.type};
 
                 for(var i = 0; i < allLanguage.length; i++) {
-                    if(field[allLanguage[i].id] != undefined && (field[allLanguage[i].id].value != undefined || field[allLanguage[i].id].data != undefined) && field[allLanguage[i].id].value != "") {
-                        f.infos[allLanguage[i].id] = {value: field[allLanguage[i].id].value, lang: allLanguage[i].id};
+                    if(field[allLanguage[i].key] != undefined && (field[allLanguage[i].key].value != undefined || field[allLanguage[i].key].data != undefined) && field[allLanguage[i].key].value != "") {
+                        f.infos[allLanguage[i].key] = {value: field[allLanguage[i].key].value, lang: allLanguage[i].key};
 
                         if(f.type == 3) {
                             // Picture
-                            f.infos[allLanguage[i].id].value = [];
-                            for(var n = 0; n < field[allLanguage[i].id].data.length; n++) {
-                                f.infos[allLanguage[i].id].value.push(field[allLanguage[i].id].data[n]._id);
+                            f.infos[allLanguage[i].key].value = [];
+                            for(var n = 0; n < field[allLanguage[i].key].data.length; n++) {
+                                f.infos[allLanguage[i].key].value.push(field[allLanguage[i].key].data[n]._id);
                             }
                         }
                     }
                 }
-                console.log(f);
+                console.log("field updated to be added", f);
 
                 this.fields.push(f);
             };

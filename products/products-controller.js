@@ -236,6 +236,7 @@
                                             value: field._id.$id,
                                             data: $scope.listMediaForField(field._id.$id)
                                         };
+                                        console.log(field._id.$id, templates[i].fields[j][field.lang]);
                                     } else {
                                         templates[i].fields[j][$scope.availableLanguages[n].key] = {data: []};
                                     }
@@ -258,8 +259,24 @@
         });
         // End of Media load all
 
-        $scope.addPictureTofield = function(t, f, m) {
+        $scope.DOMAIN_API = DOMAIN_API;
+
+        /**
+         * Add a picture to the product
+         * @param t current template of the product based on the form
+         * @param f current field in the template
+         * @param m the file
+         * @param lang lang used for the field
+         * @returns {*}
+         */
+        $scope.addPictureTofield = function(t, f, m, lang) {
+            console.log(t,f,m);
             if(t != undefined && f != undefined && m != undefined) {
+                if(!$scope.templates[t].fields[f].data)
+                    $scope.templates[t].fields[f].data = [];
+
+                $scope.templates[t].fields[f].data.push(m);
+
                 for(var i = 0; i < $scope.listMedias.length; i++) {
                     if($scope.listMedias[i].filename == m) {
                         return $scope.listMedias[i];
@@ -302,6 +319,8 @@
                         //console.log("founded");
                     } else if($scope.listMedias[i].links[j].type == "Product"){
                         //console.log($scope.listMedias[i].links[j].element.$id + " vs. " + element);
+                    } else {
+                        //console.log($scope.listMedias[i].links[j].element.$id, element)
                     }
                 }
             }

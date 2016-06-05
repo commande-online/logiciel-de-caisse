@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('medias', [ 'ngMaterial' ])
-        .factory("Media", ['$http', '$filter', '$rootScope', 'Page', 'Product', function($http, $filter, $rootScope, Page, Product) {
+        .factory("Media", ['$http', '$filter', '$rootScope', '$timeout', 'Page', 'Product', function($http, $filter, $rootScope, $timeout, Page, Product) {
             var URL_API = DOMAIN_API + "/api/1/bo-management/medias/";
             var MAX_PER_PAGE = 50;
 
