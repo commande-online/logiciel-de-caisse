@@ -44,6 +44,9 @@ module.exports = function(config) {
         'users/users-factory.js',
         'users/users-service.js',
 
+        'medias/medias-factory.js',
+        'medias/medias-service.js',
+
         'shops/shops-factory.js',
         'shops/shops.language-service.js',
 
@@ -63,6 +66,7 @@ module.exports = function(config) {
         'indexedDB/indexedDB-service.specs.js',
         'products/products-factory.specs.js',
         'products/products-service.specs.js',
+        'medias/medias-factory.specs.js',
         'pages/pages-factory.specs.js',
         'pages/pages-service.specs.js',
         'templates/templates-factory.specs.js',

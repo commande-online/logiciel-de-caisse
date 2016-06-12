@@ -35,6 +35,9 @@ module.exports = function(config) {
         'products/products-factory.js',
         'products/products-service.js',
 
+        'medias/medias-factory.js',
+        'medias/medias-service.js',
+
         'pages/pages-factory.js',
         'pages/pages-service.js',
 
@@ -63,6 +66,7 @@ module.exports = function(config) {
         'indexedDB/indexedDB-service.specs.js',
         'products/products-factory.specs.js',
         'products/products-service.specs.js',
+        'medias/medias-factory.specs.js',
         'pages/pages-factory.specs.js',
         'pages/pages-service.specs.js',
         'templates/templates-factory.specs.js',
