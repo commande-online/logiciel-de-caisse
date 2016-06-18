@@ -2,14 +2,14 @@
     angular
         .module('products')
         .controller('ProductsListController', [
-            '$mdDialog', '$log', '$q', '$scope', '$filter', 'Product', '$mdToast', '$rootScope', '$timeout', 'productService',
+            '$mdDialog', '$log', '$q', '$scope', '$filter', 'Product', '$window', '$rootScope', '$timeout', 'productService',
             ProductsListController
         ]).controller('ProductsEditController', [
             'elt', '$mdDialog', '$scope', 'Product', '$log', 'Template', 'Category', 'Media', 'languageService', 'categoryService', 'templateService',
             ProductsEditController
         ]);
 
-    function ProductsListController($mdDialog, $log, $q, $scope, $filter, Product, $mdToast, $rootScope, $timeout, productService) {
+    function ProductsListController($mdDialog, $log, $q, $scope, $filter, Product, $window, $rootScope, $timeout, productService) {
         var self = this;
         var decreaseForMaxHeight = 250;
         $scope.listProducts = productService.getProducts();
@@ -41,61 +41,11 @@
             rowHeight: 100,
             expandableRowHeight: 700,
             columnDefs: [
-                { name:'ID', field: '_id', width: '10%' },
-                { name:'Titre', width: '40%', cellTemplate: '' +
-                    '<div class="ui-grid-cell-contents" ng-class="col.colIndex()">' +
-                    '<h4>{{row.entity.name}}</h4>'+
-                    '<md-chips ng-model="row.entity.categories" readonly="true">'+
-                        '<md-chip-template>'+
-                            '{{$chip.infos.fr.name}}{{$chip.name}}'+
-                        '</md-chip-template>'+
-                    '</md-chips>'+
-                    '</div>'
-                },
-                { name:'Dernière modif', width: '10%', cellTemplate: '' +
-                    '<div class="ui-grid-cell-contents text-center" ng-class="col.colIndex()">'+
-                    '{{row.entity.logStatus[row.entity.logStatus.length - 1].date.sec * 1000 | date:\'shortDate\'}}'+
-                    '</div>'
-                },
-                { name:'Informations', width: '20%', cellTemplate :'' +
-                    '<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">'+
-                        '<div flex="25">'+
-                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Champs" title="Champs">'+
-                                '<ng-md-icon icon="art_track" style="fill:white"></ng-md-icon> {{row.entity.fields.length + row.entity.prices.length}}'+
-                            '</md-button>'+
-                        '</div>'+
-                        '<div flex="25">'+
-                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Tags" title="Tags">'+
-                                '<ng-md-icon icon="more" style="fill:white"></ng-md-icon> {{row.entity.tags.length}}'+
-                            '</md-button>'+
-                        '</div>'+
-                        '<div flex="25">'+
-                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Commentaires" title="Commentaires">'+
-                                '<ng-md-icon icon="comments" style="fill:white"></ng-md-icon> {{row.entity.comments.length}}'+
-                            '</md-button>'+
-                        '</div>'+
-                        '<div flex="25">'+
-                            '<md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Catégories" title="Catégories">'+
-                                '<ng-md-icon icon="my_library_books" style="fill:white"></ng-md-icon> {{row.entity.categories.length}}'+
-                            '</md-button>'+
-                        '</div>'+
-                    '</div>'
-
-                },
-                { name:'Action', width: '20%', cellTemplate: '' +
-                    '<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">' +
-                        '<div>' +
-                            '<md-button class="md-fab md-warm md-button-large iconInCircle" aria-label="Edition" ng-click="grid.appScope.editProduct($event, row.entity);">'+
-                                '<ng-md-icon icon="edit" size="40"></ng-md-icon>'+
-                            '</md-button>'+
-                        '</div>'+
-                        '<div>' +
-                            '<md-button class="md-fab md-warm md-button-large iconInCircle" aria-label="Suppression" ng-click="grid.appScope.showConfirmDeleteProduct($event, row.entity);">'+
-                                '<ng-md-icon icon="delete" size="40"></ng-md-icon>'+
-                            '</md-button>'+
-                        '</div>' +
-                    '</div>'
-                }
+                { name: 'ID', field: '_id', width: '10%' },
+                { name: 'Titre', width: '40%', cellTemplate: 'products/grid-title.html' },
+                { name: 'Dernière modif', width: '10%', cellTemplate: 'products/grid-last-update.html' },
+                { name: 'Informations', width: '20%', cellTemplate : 'products/grid-info.html' },
+                { name: 'Action', width: '20%', cellTemplate: 'products/grid-actions.html' }
             ],
             data : $scope.listProducts
         };
@@ -128,6 +78,12 @@
                     });
                     console.log("OK");
                 }, function() { /* CANCEL */ });
+        };
+
+
+        // Go to the product page
+        $scope.goToProduct = function(ev, product) {
+            $window.open(DOMAIN_API + "/product/"+product._id, '_blank');
         };
 
 

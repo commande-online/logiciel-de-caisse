@@ -1,0 +1,8 @@
+<div class="ui-grid-cell-contents" ng-class="col.colIndex()">
+    <h4>{{row.entity.name}}</h4>
+    <md-chips ng-model="row.entity.categories" readonly="true">
+        <md-chip-template>
+            {{$chip.infos.fr.name}}{{$chip.name}}
+        </md-chip-template>
+    </md-chips>
+</div>
