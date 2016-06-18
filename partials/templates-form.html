@@ -36,19 +36,19 @@
                         </md-select>
                         <div flex="15" class="text-center" style="padding-top: 20px">
                             <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="template.fields.length-1==$index" ng-click="templateFieldDown($event, $index);">
-                                <md-icon md-font-icon="glyphicons glyphicons-chevron-down"></md-icon>
+                                <ng-md-icon icon="expand_more" style="fill:white" size="40"></ng-md-icon>
                             </md-button>
                             <md-button class="md-fab md-mini md-warn" aria-label="Up" ng-hide="$index==0" ng-click="templateFieldUp($event, $index);">
-                                <md-icon md-font-icon="glyphicons glyphicons-chevron-up"></md-icon>
+                                <ng-md-icon icon="expand_less" style="fill:white" size="40"></ng-md-icon>
                             </md-button>
                             <input type="hidden" ng-model="field.position">
                         </div>
                         <div flex="10" class="text-center" style="padding-top: 20px">
-                            <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="template.fields.length-1!=$index" ng-click="templateFieldAdd(template);">
-                                <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+                            <md-button class="md-fab md-mini md-warn" aria-label="Add" ng-hide="template.fields.length-1!=$index" ng-click="templateFieldAdd(template);">
+                                <ng-md-icon icon="add" style="fill:white" size="40"></ng-md-icon>
                             </md-button>
-                            <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="($index+1)>=template.fields.length" ng-click="templateFieldDel($index);">
-                                <md-icon md-font-icon="glyphicons glyphicons-bin"></md-icon>
+                            <md-button class="md-fab md-mini md-warn" aria-label="Delete" ng-hide="($index+1)>=template.fields.length" ng-click="templateFieldDel($index);">
+                                <ng-md-icon icon="delete" style="fill:white" size="40"></ng-md-icon>
                             </md-button>
                         </div>
                     </div>
