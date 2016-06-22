@@ -33,7 +33,7 @@
             },
             resetMedias: function() {
                 medias = [];
-                _this.loadMedias();
+                return this.loadMedias();
             }
         };
     }
