@@ -3,96 +3,26 @@
         <span flex></span>
 
         <div class="main-fab material-button-left">
-            <button class="md-fab md-accent md-button md-default-theme" ng-click="newPromotion($event);">
-                <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+            <button class="md-fab md-accent md-button md-default-theme iconInCircle" ng-click="newPromotion($event);">
+                <ng-md-icon icon="add" size="40"></ng-md-icon>
             </button>
         </div>
 
         <div class="md-toolbar-tools">
             <div class="fill-height" layout='row' flex>
                 <div class="md-toolbar-item.md-breadcrumb" ng-hide='toggleSearch'>
-                    <h3 class="ng-binding">Liste des informations</h3>
+                    <h3 class="ng-binding">Liste des informations / promotions</h3>
                 </div>
                 <span flex ng-hide='toggleSearch'></span>
                 <md-input-container flex style='' ng-show='toggleSearch'>
-                    <input type='text' ng-model='search.shortDescription' aria-label="Recherche" />
+                    <input type='text' ng-model='searchText' ng-change="refreshData()"  aria-label="Recherche" />
                 </md-input-container>
                 <div layout="row" class="md-toolbar-item md-tools">
-                    <a ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme" tabindex="0"><span class="glyphicons glyphicons-search"></span></a>
+                    <a ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme" tabindex="0"><ng-md-icon icon="search"></ng-md-icon></a>
                 </div>
             </div>
         </div>
     </md-toolbar>
-    <md-content id="listPromotions" class="md-padding text-center" style="">
-    <table class="table tableItems">
-        <thead>
-        <tr>
-            <th width="0%">ID</th>
-            <th width="100%">
-                <a ng-click="orderByField='shortDescription'; reverseSort = !reverseSort">
-                    Titre
-                </a>
-            </th>
-            <th width="0%" class="text-center">
-                <a ng-click="orderByField='item.sendDate.sec'; reverseSort = !reverseSort">
-                    Dernière&nbsp;modif.
-                </a>
-            </th>
-            <th width="0%" class="text-center">Informations</th>
-            <th width="0%" class="text-center">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="item in listPromotions | filter:search | orderBy:orderByField:reverseSort" id="promotion_{{item._id}}">
-            <td>{{item._id}}</td>
-            <td class="text-left"><strong>{{item.infos.fr.shortDescription}}</strong> - fin : {{item.validUntilDate.sec * 1000 | date:'shortDate'}}</td>
-            <td class="text-center">
-                {{item.logStatus[item.logStatus.length - 1].date.sec * 1000 | date:'shortDate'}}
-            </td>
-            <td class="text-center">
-                <div layout="row" ng-switch="item.status">
-                    <div ng-switch-when="2">
-                        <md-button class="md-fab md-primary md-button-large" aria-label="Pas encore envoyé">
-                            <md-icon md-font-icon="glyphicons glyphicons-inbox"></md-icon>
-                        </md-button>
-                    </div>
-                    <div ng-switch-when="1" flex>
-                        <md-button class="md-fab md-primary md-button-large" aria-label="Envoyé">
-                            <md-icon md-font-icon="glyphicons glyphicons-inbox-out"></md-icon>
-                        </md-button>
-                    </div>
-                    <div ng-switch-when="1" flex>
-                        <md-button class="md-fab md-primary md-button-large" aria-label="Cible">
-                            <md-icon md-font-icon="glyphicons glyphicons-parents"></md-icon>{{item.listUsers.length}}
-                        </md-button>
-                    </div>
-                </div>
-
-            </td>
-            <td>
-                <div layout="row" ng-switch="item.status">
-                    <div flex="33" ng-switch-when="2">
-                        <md-button class="md-fab md-warm md-button-large" aria-label="Affichage" ng-click="sendPromotion($event, item);">
-                            <md-icon md-font-icon="glyphicons glyphicons-send"></md-icon>
-                        </md-button>
-                    </div>
-                    <div flex="33" ng-switch-when="1">
-                    </div>
-                    <div flex="33">
-                        <md-button class="md-fab md-warm md-button-large" aria-label="Edition" ng-click="editPromotion($event, item);">
-                            <md-icon md-font-icon="glyphicons glyphicons-pencil"></md-icon>
-                        </md-button>
-                    </div>
-                    <div flex="33">
-                        <md-button class="md-fab md-warm md-button-large" aria-label="Suppression" ng-click="showConfirmDeletePromotion($event, item);">
-                            <md-icon md-font-icon="glyphicons glyphicons-bin"></md-icon>
-                        </md-button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</md-content>
+    <div ui-grid="gridData" id="listPromotions" class="myGrid"></div>
 </section>
 <p>&nbsp;</p>

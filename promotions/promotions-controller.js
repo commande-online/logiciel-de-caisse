@@ -2,7 +2,7 @@
     angular
         .module('promotions')
         .controller('PromotionsListController', [
-            '$mdDialog', '$log', '$q', '$scope', '$sce', 'Promotion', '$mdToast', '$rootScope', 'promotionService',
+            '$mdDialog', '$log', '$q', '$scope', '$timeout', 'Promotion', '$filter', '$rootScope', 'promotionService',
             PromotionsListController
         ]).controller('PromotionsEditController', [
             'elt', '$mdDialog', '$scope', 'Promotion', '$filter', 'Product', 'languageService', 'productService',
@@ -12,8 +12,9 @@
             PromotionsSendController
         ]);
 
-    function PromotionsListController($mdDialog, $log, $q, $scope, $sce, Promotion, $mdToast, $rootScope, promotionService) {
+    function PromotionsListController($mdDialog, $log, $q, $scope, $timeout, Promotion, $filter, $rootScope, promotionService) {
         var self = this;
+        $scope.listPromotions = promotionService.getPromotions();
 
         // For the height of the list
         var decreaseForMaxHeight = 250;
@@ -30,7 +31,30 @@
         });
         // End of the height thingy
 
-        $scope.listPromotions = promotionService.getPromotions();
+        $scope.gridData = {
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+                $timeout(function() {
+                    $scope.gridApi.core.handleWindowResize();
+                });
+            },
+            enableSorting: true,
+            rowHeight: 100,
+            expandableRowHeight: 700,
+            columnDefs: [
+                { name: 'ID', field: '_id', width: '10%' },
+                { name: 'Titre', width: '40%', cellTemplate: 'promotions/grid-title.html' },
+                { name: 'Dernière modif', width: '10%', cellTemplate: 'promotions/grid-last-update.html' },
+                { name: 'Informations', width: '20%', cellTemplate : 'promotions/grid-info.html' },
+                { name: 'Action', width: '20%', cellTemplate: 'promotions/grid-actions.html' }
+            ],
+            data : $scope.listPromotions
+        };
+
+        $scope.refreshData = function () {
+            $scope.gridData.data = $filter('filter')($scope.listPromotions, $scope.searchText, undefined);
+        };
+
 
         $scope.newPromotion = function(ev) {
             var promotion = new Promotion();

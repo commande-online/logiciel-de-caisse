@@ -50,6 +50,9 @@ module.exports = function (config) {
             'shops/shops-factory.js',
             'shops/shops.language-service.js',
 
+            'promotions/promotions-factory.js',
+            'promotions/promotions-service.js',
+
             // To be replaced
             'modules/*.js',
             'services/*.js',
