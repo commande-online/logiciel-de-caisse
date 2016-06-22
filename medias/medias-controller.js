@@ -2,7 +2,7 @@
     angular
         .module('medias')
         .controller('MediasListController', [
-            '$mdDialog', '$log', '$q', '$scope', '$sce', 'Media', '$mdToast', '$rootScope', '$timeout', 'mediaService',
+            '$mdDialog', '$log', '$q', '$scope', '$filter', 'Media', '$timeout', '$rootScope', '$timeout', 'mediaService',
             MediasListController
         ]).controller('MediasEditController', [
             'elt', '$mdDialog', '$scope', 'Media', '$filter', 'languageService',
@@ -12,10 +12,11 @@
             MediasUploadController
         ]);
 
-    function MediasListController($mdDialog, $log, $q, $scope, $sce, Media, $mdToast, $rootScope, $timeout, mediaService) {
+    function MediasListController($mdDialog, $log, $q, $scope, $filter, Media, $timeout, $rootScope, $timeout, mediaService) {
         var self = this;
         $scope.files = [];
         $scope.listMedias = mediaService.getMedias();
+        $scope.DOMAIN_API = DOMAIN_API;
 
         // For the height of the list
         var decreaseForMaxHeight = 250;
@@ -30,6 +31,31 @@
         $scope.$on("$destroy", function () {
             $(window).off("resize.doResize"); //remove the handler added earlier
         });
+        // End height
+
+        $scope.gridData = {
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+                $timeout(function() {
+                    $scope.gridApi.core.handleWindowResize();
+                });
+            },
+            enableSorting: true,
+            rowHeight: 100,
+            expandableRowHeight: 700,
+            columnDefs: [
+                { name: 'ID', field: '_id', width: '10%' },
+                { name: 'Titre', width: '40%', cellTemplate: 'medias/grid-title.html' },
+                { name: 'Dernière modif', width: '10%', cellTemplate: 'medias/grid-last-update.html' },
+                { name: 'Informations', width: '20%', cellTemplate : 'medias/grid-info.html' },
+                { name: 'Action', width: '20%', cellTemplate: 'medias/grid-actions.html' }
+            ],
+            data : $scope.listMedias
+        };
+
+        $scope.refreshData = function () {
+            $scope.gridData.data = $filter('filter')($scope.listMedias, $scope.searchText, undefined);
+        };
 
         $scope.newMedia = function (ev) {
 
