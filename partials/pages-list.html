@@ -3,8 +3,8 @@
         <span flex></span>
 
         <div class="main-fab material-button-left">
-            <button class="md-fab md-accent md-button md-default-theme" ng-click="newPage($event);">
-                <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+            <button class="md-fab md-accent md-button md-default-theme iconInCircle" ng-click="newPage($event);">
+                <ng-md-icon icon="add" size="40"></ng-md-icon>
             </button>
         </div>
 
@@ -15,91 +15,14 @@
                 </div>
                 <span flex ng-hide='toggleSearch'></span>
                 <md-input-container flex style='' ng-show='toggleSearch'>
-                    <input type='text' ng-model='search.$' />
+                    <input type='text' ng-model='searchText' ng-change="refreshData()"  aria-label="Recherche" />
                 </md-input-container>
                 <div layout="row" class="md-toolbar-item md-tools">
-                    <a ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme" tabindex="0"><span class="glyphicons glyphicons-search"></span></a>
+                    <a ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme" tabindex="0"><ng-md-icon icon="search"></ng-md-icon></a>
                 </div>
             </div>
         </div>
     </md-toolbar>
-    <md-content id="listPages" class="md-padding text-center" style="">
-    <table class="table tableItems">
-        <thead>
-        <tr>
-            <th width="0%">ID</th>
-            <th width="100%">
-                <a ng-click="orderByField='title'; reverseSort = !reverseSort" class="pointer">
-                    Titre
-                </a>
-            </th>
-            <th width="0%" class="text-center">
-                <a ng-click="orderByField='lang'; reverseSort = !reverseSort" class="pointer">
-                    Langue
-                </a>
-            </th>
-            <th width="0%" class="text-center">
-                <a ng-click="orderByField='versions.date.sec'; reverseSort = !reverseSort" class="pointer">
-                    Dernière&nbsp;modif.
-                </a>
-            </th>
-            <th width="0%" class="text-center">Informations</th>
-            <th width="0%" class="text-center">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="item in listPages | filter:search | orderBy:orderByField:reverseSort" id="page_{{item._id}}">
-            <td>{{item._id}}</td>
-            <td class="text-left">
-                <h4>{{item.title}}</h4>
-            </td>
-            <td class="text-center">
-                {{item.lang}}
-            </td>
-            <td class="text-center">
-                {{item.versions[item.versions.length - 1].date.sec * 1000 | date:'shortDate'}}
-            </td>
-            <td>
-                <div layout="row">
-                    <div flex="33">
-                        <md-button ng-if="item.comment" class="md-fab md-primary md-button-large" aria-label="Commentaires">
-                            <md-icon md-font-icon="glyphicons glyphicons-conversation"></md-icon>{{item.comments.length}}
-                        </md-button>
-                    </div>
-                    <div flex="33">
-                        <md-button class="md-fab md-primary md-button-large" aria-label="Version">
-                            <md-icon md-font-icon="glyphicons glyphicons-database"></md-icon>{{item.versions.length}}
-                        </md-button>
-                    </div>
-                    <div flex="33">
-                        <md-button class="md-fab md-primary md-button-large" aria-label="Tags">
-                            <md-icon md-font-icon="glyphicons glyphicons-tags"></md-icon>{{item.tags.length}}
-                        </md-button>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div layout="row">
-                    <div flex="33">
-                        <md-button class="md-fab md-warm md-button-large" aria-label="Edition" ng-click="editPage($event, item);">
-                            <md-icon md-font-icon="glyphicons glyphicons-pencil"></md-icon>
-                        </md-button>
-                    </div>
-                    <div flex="33">
-                        <md-button class="md-fab md-warm md-button-large" aria-label="Suppression" ng-click="showConfirmDeletePage($event, item);">
-                            <md-icon md-font-icon="glyphicons glyphicons-bin"></md-icon>
-                        </md-button>
-                    </div>
-                    <div flex="33">
-                        <md-button class="md-fab md-warm md-button-large" aria-label="Affichage" ng-click="showPage(item);">
-                            <md-icon md-font-icon="glyphicons glyphicons-eye-open"></md-icon>
-                        </md-button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</md-content>
+    <div ui-grid="gridData" id="listPages" class="myGrid"></div>
 </section>
-        <p>&nbsp;</p>
+<p>&nbsp;</p>
