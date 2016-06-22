@@ -236,6 +236,9 @@ md-chip-template img {
     height: 50px;
 
 }
+.form .dialog-content button.md-button.md-fab.md-mini {
+    padding: 0px;
+}
 /****************
 **  Home Page  **
 ****************/
@@ -345,4 +348,7 @@ md-chip-template img {
 ************/
 .ui-grid-top-panel {
     background: #f3f3f3 !important;
+}
+.ui-grid-cell-contents  .md-button.md-fab[disabled] {
+    background-color: rgba(0,0,0,0);
 }
