@@ -1,0 +1,17 @@
+<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Commentaires" title="Commentaires">
+            <ng-md-icon icon="comments" style="fill:white"></ng-md-icon> {{row.entity.comments.length}}
+        </md-button>
+    </div>
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Version" title="Version">
+            <ng-md-icon icon="description" style="fill:white"></ng-md-icon> {{row.entity.versions.length}}
+        </md-button>
+    </div>
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Tags" title="Tags">
+            <ng-md-icon icon="more" style="fill:white"></ng-md-icon> {{row.entity.tags.length}}
+        </md-button>
+    </div>
+</div>

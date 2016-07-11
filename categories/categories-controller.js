@@ -2,15 +2,16 @@
     angular
         .module('categories')
         .controller('CategoriesListController', [
-            '$mdDialog', '$log', '$q', '$scope', '$sce', 'Category', '$mdToast', '$rootScope', 'categoryService',
+            '$mdDialog', '$log', '$q', '$scope', '$timeout', 'Category', '$filter', '$rootScope', 'categoryService',
             CategoriesListController
         ]).controller('CategoriesEditController', [
             'elt', '$mdDialog', '$scope', 'Category', '$filter', 'languageService',
             CategoriesEditController
         ]);
 
-    function CategoriesListController($mdDialog, $log, $q, $scope, $sce, Category, $mdToast, $rootScope, categoryService) {
+    function CategoriesListController($mdDialog, $log, $q, $scope, $timeout, Category, $filter, $rootScope, categoryService) {
         var self = this;
+        $scope.listCategories = categoryService.getCategories();
 
         // For the height of the list
         var decreaseForMaxHeight = 250;
@@ -27,7 +28,29 @@
         });
         // End of the height thingy
 
-        $scope.listCategories = categoryService.getCategories();
+        $scope.gridData = {
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+                $timeout(function() {
+                    $scope.gridApi.core.handleWindowResize();
+                });
+            },
+            enableSorting: true,
+            rowHeight: 100,
+            expandableRowHeight: 700,
+            columnDefs: [
+                { name: 'ID', field: '_id', width: '10%' },
+                { name: 'Titre', width: '40%', cellTemplate: 'categories/grid-title.html' },
+                { name: 'Dernière modif', width: '10%', cellTemplate: 'categories/grid-last-update.html' },
+                { name: 'Informations', width: '20%', cellTemplate : 'categories/grid-info.html' },
+                { name: 'Action', width: '20%', cellTemplate: 'categories/grid-actions.html' }
+            ],
+            data : $scope.listCategories
+        };
+
+        $scope.refreshData = function () {
+            $scope.gridData.data = $filter('filter')($scope.listCategories, $scope.searchText, undefined);
+        };
 
         $scope.newCategory = function(ev) {
             var category = new Category();

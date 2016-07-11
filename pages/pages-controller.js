@@ -2,15 +2,16 @@
     angular
         .module('pages')
         .controller('PagesListController', [
-            'pageService', '$mdDialog', '$log', '$q', '$scope', '$sce', 'Page', '$window', '$rootScope',
+            'pageService', '$mdDialog', '$log', '$timeout', '$filter', '$scope', '$sce', 'Page', '$window', '$rootScope',
             PagesListController
         ]).controller('PagesEditController', [
             'elt', '$mdDialog', '$scope', 'Page', 'languageService',
             PagesEditController
         ]);
 
-    function PagesListController(pageService, $mdDialog, $log, $q, $scope, $sce, Page, $window, $rootScope) {
+    function PagesListController(pageService, $mdDialog, $log, $timeout, $filter, $scope, $sce, Page, $window, $rootScope) {
         var self = this;
+        $scope.listPages = pageService.getPages();
 
         // For the height of the list
         var decreaseForMaxHeight = 250;
@@ -27,8 +28,30 @@
         });
         // End of the height thingy
 
-        $scope.listPages = pageService.getPages();
+        $scope.gridData = {
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+                $timeout(function() {
+                    $scope.gridApi.core.handleWindowResize();
+                });
+            },
+            enableSorting: true,
+            rowHeight: 100,
+            expandableRowHeight: 700,
+            columnDefs: [
+                { name: 'ID', field: '_id', width: '10%' },
+                { name: 'Titre', width: '35%', cellTemplate: 'pages/grid-title.html' },
+                { name: 'Langue', field: 'lang', width: '5%' },
+                { name: 'Dernière modif', width: '10%', cellTemplate: 'pages/grid-last-update.html' },
+                { name: 'Informations', width: '20%', cellTemplate : 'pages/grid-info.html' },
+                { name: 'Action', width: '20%', cellTemplate: 'pages/grid-actions.html' }
+            ],
+            data : $scope.listPages
+        };
 
+        $scope.refreshData = function () {
+            $scope.gridData.data = $filter('filter')($scope.listPages, $scope.searchText, undefined);
+        };
 
         $scope.trustTextPage = function(page, i) {
             return $sce.trustAsHtml(page.versions[i].text);
@@ -59,7 +82,7 @@
                         }
                     });
                     console.log("OK");
-                }, function() { /* CANCEL */ });
+                }, function () { /* CANCEL */ });
         };
 
         $scope.editPage = function(ev, page) {
@@ -85,11 +108,11 @@
                         }
                     });
                     console.log("OK");
-                }, function() { /* CANCEL */ });
+                }, function () { /* CANCEL */ });
         };
 
         $scope.showPage = function(page){
-            $window.open('/page/'+page.name, '_blank');
+            $window.open(DOMAIN_API + '/page/'+page.name, '_blank');
         };
 
         $scope.showConfirmDeletePage = function(ev, page) {
@@ -110,7 +133,7 @@
                     }
                 });
 
-            }, function() {});
+            }, function () {});
         };
     }
 

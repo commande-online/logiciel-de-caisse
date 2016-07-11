@@ -1,0 +1,12 @@
+<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">
+    <div>
+        <md-button class="md-fab md-warm md-button-large iconInCircle" aria-label="Edition" ng-click="grid.appScope.editTemplate($event, row.entity);">
+            <ng-md-icon icon="edit" size="40"></ng-md-icon>
+        </md-button>
+    </div>
+    <div>
+        <md-button class="md-fab md-warm md-button-large iconInCircle" aria-label="Suppression" ng-click="grid.appScope.showConfirmDeleteTemplate($event, row.entity);" ng-disabled="row.entity.products.length > 0">
+            <ng-md-icon icon="delete" size="40"></ng-md-icon>
+        </md-button>
+    </div>
+</div>

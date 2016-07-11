@@ -2,15 +2,16 @@
     angular
         .module('templates')
         .controller('TemplatesListController', [
-            '$mdDialog', '$log', '$q', '$scope', '$sce', 'Template', '$mdToast', '$rootScope', 'templateService',
+            '$mdDialog', '$log', '$q', '$scope', '$timeout', 'Template', '$filter', '$rootScope', 'templateService',
             TemplatesListController
         ]).controller('TemplatesEditController', [
             'elt', '$mdDialog', '$scope', 'Template', '$filter',
             TemplatesEditController
         ]);
 
-    function TemplatesListController($mdDialog, $log, $q, $scope, $sce, Template, $mdToast, $rootScope, templateService) {
+    function TemplatesListController($mdDialog, $log, $q, $scope, $timeout, Template, $filter, $rootScope, templateService) {
         var self = this;
+        $scope.listTemplates = templateService.getTemplates();
 
         // For the height of the list
         var decreaseForMaxHeight = 250;
@@ -27,7 +28,29 @@
         });
         // End of the height thingy
 
-        $scope.listTemplates = templateService.getTemplates();
+        $scope.gridData = {
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+                $timeout(function() {
+                    $scope.gridApi.core.handleWindowResize();
+                });
+            },
+            enableSorting: true,
+            rowHeight: 100,
+            expandableRowHeight: 700,
+            columnDefs: [
+                { name: 'ID', field: '_id', width: '10%' },
+                { name: 'Titre', field: 'name', width: '40%' },
+                { name: 'Dernière modif', width: '10%', cellTemplate: 'templates/grid-last-update.html' },
+                { name: 'Informations', width: '20%', cellTemplate : 'templates/grid-info.html' },
+                { name: 'Action', width: '20%', cellTemplate: 'templates/grid-actions.html' }
+            ],
+            data : $scope.listTemplates
+        };
+
+        $scope.refreshData = function () {
+            $scope.gridData.data = $filter('filter')($scope.listTemplates, $scope.searchText, undefined);
+        };
 
         $scope.newTemplate = function(ev) {
             var template = new Template();

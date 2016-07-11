@@ -1,7 +1,7 @@
 <md-dialog class="form">
     <md-content class="sticky-container">
         <md-toolbar class="md-accent">
-            <h3 class="text-center">{{title}}</h3>
+            <h3 class="text-center">{{category.infos[lang].name}}</h3>
         </md-toolbar>
 
 
@@ -53,7 +53,7 @@
                                     </md-input-container>
                                     <div flex="10" class="text-right">
                                         <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="category.ingredients.length-1!=$index" ng-click="categoryIngredientAdd(category);">
-                                            <md-icon md-font-icon="glyphicons glyphicons-plus"></md-icon>
+                                            <ng-md-icon icon="add" style="fill:white" size="40"></ng-md-icon>
                                         </md-button>
                                     </div>
                                 </div>
@@ -73,10 +73,10 @@
                                     </md-input-container>
                                     <div flex="13" class="text-center">
                                         <md-button class="md-fab md-mini md-warn" aria-label="Down" ng-hide="category.products.length-1==$index" ng-click="categoryProductDown($event, $index);">
-                                            <md-icon md-font-icon="glyphicons glyphicons-chevron-down"></md-icon>
+                                            <ng-md-icon icon="expand_more" style="fill:white" size="40"></ng-md-icon>
                                         </md-button>
                                         <md-button class="md-fab md-mini md-warn" aria-label="Up" ng-hide="$index==0" ng-click="categoryProductUp($event, $index);">
-                                            <md-icon md-font-icon="glyphicons glyphicons-chevron-up"></md-icon>
+                                            <ng-md-icon icon="expand_less" style="fill:white" size="40"></ng-md-icon>
                                         </md-button>
                                         <input type="hidden" ng-model="product.position">
                                     </div>

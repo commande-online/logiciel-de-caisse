@@ -1,0 +1,12 @@
+<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Tags" title="Tags">
+            <ng-md-icon icon="more" style="fill:white"></ng-md-icon> {{row.entity.tags.length}}
+        </md-button>
+    </div>
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Liens" title="Liens">
+            <ng-md-icon icon="link" style="fill:white"></ng-md-icon> {{row.entity.links.length}}
+        </md-button>
+    </div>
+</div>

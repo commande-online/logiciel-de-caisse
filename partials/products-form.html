@@ -36,7 +36,7 @@
                             </div>
 
                             <div layout layout-sm="column">
-                                <md-input-container flex="30"  layout="row">
+                                <md-input-container flex="70"  layout="row">
                                     <span class="labelSelect">Fiche produit</span>
                                     <md-select name="templateSelect" ng-model="product.template.$id" placeholder="Fiche produit" class="" flex required>
                                         <md-option ng-repeat="t in templates" ng-value="t._id">{{t.name}}</md-option>
@@ -45,7 +45,7 @@
                                         <div ng-message="required">Champs obligatoire</div>
                                     </div>
                                 </md-input-container>
-                                <md-switch ng-model="product.website" aria-label="Produit présent sur le siteweb" class="md-primary">
+                                <md-switch flex="30" ng-model="product.website" aria-label="Produit présent sur le siteweb" class="md-primary">
                                     Produit présent sur le siteweb
                                 </md-switch>
                             </div>
@@ -106,7 +106,7 @@
                                     <!-- Picture field -->
                                     <div ng-switch-when="3">
                                         <h4 flex>{{f.name}}</h4>
-                                        <md-chips ng-model="f[lang].data" class="withPicture" md-autocomplete-snap md-require-match md-on-append="addPictureTofield(j, i, $chip)" flex>
+                                        <md-chips ng-model="f[lang].data" class="withPicture" md-autocomplete-snap md-require-match flex>
                                             <md-autocomplete
                                                     md-min-length="3"
                                                     md-search-text="searchText"
@@ -118,7 +118,7 @@
                                             </md-autocomplete>
                                             <md-chip-template>
                                                 <span>
-                                                  <img alt="{{ $chip.name }}" ng-src="/media/show/{{$chip._id}}/{{$chip.filename}}" class="md-avatar" />
+                                                  <img alt="{{ $chip.name }}" ng-src="{{DOMAIN_API}}/media/show/{{$chip._id}}/{{$chip.filename}}" class="md-avatar" />
                                                   <strong>{{$chip.infos[lang].name}}</strong>
                                                   <em>({{$chip.filename}})</em>
                                                 </span>
@@ -134,7 +134,7 @@
                     <md-tab label="Les Catégories">
                         <div layout="row" layout-sm="column" layout-wrap>
                             <md-switch ng-model="c.productIncluded" aria-label="c.name" class="md-primary" ng-repeat="c in categories" flex="30">
-                                {{ c.name }}{{ c.infos.fr.name }} {{c.productIncluded}}
+                                {{ c.name }}{{ c.infos.fr.name }}
                             </md-switch>
                         </div>
                     </md-tab>

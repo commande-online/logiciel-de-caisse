@@ -44,7 +44,7 @@
                         <md-content class="md-padding">
                             <div ng-show="media.isPicture()" class="ng-hide text-center">
                                 <h3>{{media.name}}</h3>
-                                <img ng-src="/media/show/{{media._id}}/{{media.filename}}" class="md-card-image" style="max-width: 100%" />
+                                <img ng-src="{{DOMAIN_API}}/media/show/{{media._id}}/{{media.filename}}" class="md-card-image" style="max-width: 100%" />
                             </div>
                             <div ng-show="!media.isPicture()" class="ng-hide text-center">
                                 <h3>{{media.name}}</h3>

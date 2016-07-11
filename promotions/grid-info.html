@@ -1,0 +1,17 @@
+<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center" ng-switch="row.entity.status">
+    <div ng-switch-when="2" flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Pas encore envoyé" title="Pas encore envoyé">
+            <ng-md-icon icon="inbox" size="40"></ng-md-icon>
+        </md-button>
+    </div>
+    <div ng-switch-when="1" flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Envoyé" title="Envoyé">
+            <ng-md-icon icon="send" size="40"></ng-md-icon>
+        </md-button>
+    </div>
+    <div ng-switch-when="1" flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Cible" title="Cible">
+            <ng-md-icon icon="people" style="fill:white"></ng-md-icon> {{row.entity.listUsers.length}}
+        </md-button>
+    </div>
+</div>

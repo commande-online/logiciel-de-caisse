@@ -1,0 +1,22 @@
+<div class="ui-grid-cell-contents" ng-class="col.colIndex()" layout="row" layout-align="center center">
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Champs" title="Champs">
+            <ng-md-icon icon="art_track" style="fill:white"></ng-md-icon> {{row.entity.fields.length + row.entity.prices.length}}
+        </md-button>
+    </div>
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Tags" title="Tags">
+            <ng-md-icon icon="more" style="fill:white"></ng-md-icon> {{row.entity.tags.length}}
+        </md-button>
+    </div>
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Commentaires" title="Commentaires">
+            <ng-md-icon icon="comments" style="fill:white"></ng-md-icon> {{row.entity.comments.length}}
+        </md-button>
+    </div>
+    <div flex="25">
+        <md-button class="md-fab md-primary md-button-large iconInCircle" aria-label="Catégories" title="Catégories">
+            <ng-md-icon icon="my_library_books" style="fill:white"></ng-md-icon> {{row.entity.categories.length}}
+        </md-button>
+    </div>
+</div>

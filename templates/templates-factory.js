@@ -72,7 +72,7 @@
                 });
             };
             Template.build = function(data) {
-                return new Template(data._id.$id, data.site, data.name, data.labelPriceSelect, data.fields, data.products, data.status, data.logStatus, data.last_refresh);
+                return new Template(data._id.$id ? data._id.$id : data._id, data.site, data.name, data.labelPriceSelect, data.fields, data.products, data.status, data.logStatus, data.last_refresh);
             };
             /*
              Template.loadAll = function(next) {
